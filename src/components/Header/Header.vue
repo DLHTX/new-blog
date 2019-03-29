@@ -1,7 +1,7 @@
 <template>
     <div class="navbar-container"> 
         <a href="https://www.linpx.com/" class="navbar-logo"> 
-            <img src="https://www.linpx.com/usr/themes/pinghsu/images/logo.png" alt="LiNPX"> 
+            <img src="../../../img/logo.png" > 
         </a> 
         <div class="navbar-menu"> 
             <a href="https://www.linpx.com/archives.html">Archives</a> 
@@ -52,7 +52,7 @@ export default {
     position: relative;
     width: 1040px;
     max-width: 100%;
-    height: 70px;
+    height: 60px;
     margin: 0 auto;
 }
 .navbar-logo {

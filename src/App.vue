@@ -5,7 +5,9 @@
             <Header class='head'></Header>
         </el-header>
         <el-main>
-            <router-view name="default" ></router-view>
+            <transition :name="transitionName">
+                <router-view name="default" class="child-view"></router-view>
+            </transition>
         </el-main>
         <el-footer>
             <Footer></Footer>
@@ -29,12 +31,14 @@ export default {
 	return{
         showStyle:false,
         isRun:false,
-        slogan:null
-
+        slogan:null,
+        transitionName: 'slide-left' 
 	}
   },
   mounted(){
       this.checkLogin()
+      window.addEventListener('scroll', this.handleScroll, true)
+
   },
   methods:{
     ...mapActions([
@@ -48,12 +52,24 @@ export default {
             }
         }
     },
+        handleScroll(){
+        // 页面滚动距顶部距离
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        var scroll = scrollTop - this.i;
+        this.i = scrollTop;
+        if(scroll<0){
+            console.log('up')
+        }else{
+            console.log('down')
+        }
+    }
   },
   computed:{
     ...mapGetters([
         'isLogin',
         'user',
     ]),
+    
     
   },
   watch:{
@@ -71,8 +87,14 @@ export default {
     position: relative;
     overflow: hidden;
 }
-.header {
-    box-shadow: 0 1px 5px rgba(0,0,0,.1);
-    z-index: 10;
-}
+// .slide-left-enter, .slide-right-leave-active { 
+//     opacity: 0; 
+//     -webkit-transform: translate(30px, 0); 
+// 　　transform: translate(30px, 0); 
+// } 
+// .slide-left-leave-active, .slide-right-enter { 
+// 　　opacity: 0; 
+// 　　-webkit-transform: translate(-30px, 0); 
+// 　　transform: translate(-30px, 0); 
+// }
 </style>

@@ -1,13 +1,23 @@
 <template>
-    <div class="blog_content"> 
-        <div class='blog_item' v-for="(blog,index) in blogArr" :key="index">
-            <img src="{{blog.src}}" alt="">
-            <div class='blog_item_body'>我是里面的文字文字文字文字</div>
-            <div class="blog_item_back">
+    <div>
+        <div class="blog_content"> 
+            <div class='blog_item' v-for="(blog,index) in blogArr" :key="index">
+                <div class="img_content"><img v-lazy="blog.src" alt=""></div>
+                <div class='blog_item_body'><p>我是文字我是文字我是文字我是文字我是文字我是文字我是文字</p></div>
+                <div class="blog_item_back">
+                </div>
+                <div class='blog_item_title'><p> 我是标题我是标题我是标题我是标题我是标题我是标题我是标题</p></div>
+                <div class='tip'>#css</div>
             </div>
-            <div class='blog_item_title'>我是标题</div>
+        </div>
+        <div style="height: 30px;">
+            <el-pagination
+                layout="prev, pager, next"
+                :total="1000">
+            </el-pagination>
         </div>
     </div>
+
 </template>
 
 
@@ -25,12 +35,12 @@ export default {
   },
   data(){
 	return{
-        blogArr:[{},{}]
+        blogArr:[{},{},{},{},{},{},{}]
 	}
   },
   created(){
-        blogArr.forEach(item=>{
-            item.src = 'https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture'
+        this.blogArr.forEach(item=>{
+            item.src = 'https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a='+Math.random()
         })
   },
   methods:{
@@ -40,6 +50,7 @@ export default {
             'logout',
             'getPermissions'
         ]),
+
   },
   computed:{
       ...mapGetters([
@@ -53,22 +64,52 @@ export default {
 
 <style lang="less">
 @import "../../assets/common.less";
-img{
-  height:320px;
-  width: 250px;
-  transition: all .4s;
+.img_content{
+    height: 320px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    img{
+        height: 100%;
+        width: auto;
+        -webkit-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+}
 
+.blog_content{
+    width: 80%;
+    margin: 0 auto;
+    max-width: 880px;
+    min-width: 820px;
+    margin-top: 3rem;
 }
 .blog_item{
+    margin: -1rem 0.9rem;
     height: 400px;
     display: inline-block;
-    width: 250px;
+    width: 30%;
     background: white;
     position: relative;
     border-radius: 3px;
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
     transition: all .4s;
+    cursor: pointer;
+    .tip{
+        position: absolute;
+        top: 90%;
+        left: 77%;
+        height: 23px;
+        display: flex;
+        justify-content: center;
+        background-color: #f56969;
+        align-items: center;
+        color: white;
+        width: 45px;
+        border-radius: 24px;
+        font-size: 14px;
+    }
     &:hover .blog_item_body{
         opacity: 1;
         transition: all .4s;
@@ -77,26 +118,36 @@ img{
     &:hover img{
         transform: scale(1.1);
         transition: all .4s;
-        filter:blur(3px);
+        filter:blur(3px) brightness(0.6);
     }
     &:hover{
-        box-shadow: 0 1px 10px rgba(144, 144, 144, 0.45);
+        box-shadow: 2px 2px 4px rgba(0,0,0,.1);
     }
 }
 .blog_item_back{
-    position: absolute;
-    height: 324px;
-    width: 338px;
+position: absolute;
+    height: 330px;
+    width: 380px;
     background: #fff;
-    top: 63%;
-    left: -29%;
+    top: 65%;
+    left: -30%;
     -webkit-transform: rotate(7deg);
-    transform: rotate(11deg);
+    transform: rotate(10deg);
 }
 .blog_item_title{
     width: 100%;
     position: absolute;
-    top: 60%;
+    top: 69%;
+    p{
+        font-size: 17px;
+        display: flex;
+        line-height: 24px;
+        padding: 0px 20px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
 }
 .blog_item_body{
     position: absolute;
@@ -104,10 +155,61 @@ img{
     color: white;
     width: 100%;
     opacity: 0;
+    p{
+        height: 15rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 25px;
+        padding: 0px 20px;
+    }
 }
 @keyframes move{
     0%   {top: 10%;}
     100% {top: 0;}
 }
 
+.el-pager li {
+    background: #f7f7f7;
+     transition: all .3s;
+}
+.el-pagination .btn-next {
+    background: #f7f7f7;
+}
+.el-pagination .btn-prev {
+      background: #f7f7f7;
+}
+.el-pagination button:disabled {
+    background: #f7f7f7;
+}
+.el-pager li.active {
+    color: #eb5055;
+    transition: all .3s;
+}
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
