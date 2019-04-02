@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="blog_content"> 
-            <div class='blog_item' v-for="(blog,index) in blogArr" :key="index">
+            <router-link :to="{name:'blog',query:{id:'blog.src',name:'blog.src'}}" class='blog_item' v-for="(blog,index) in blogArr" :key="index">
                 <div class="img_content"><img v-lazy="blog.src" alt=""></div>
                 <div class='blog_item_body'><p>我是文字我是文字我是文字我是文字我是文字我是文字我是文字</p></div>
                 <div class="blog_item_back">
                 </div>
                 <div class='blog_item_title'><p> 我是标题我是标题我是标题我是标题我是标题我是标题我是标题</p></div>
                 <div class='tip'>#css</div>
-            </div>
+            </router-link>
         </div>
         <div style="height: 30px;">
             <el-pagination
@@ -41,6 +41,8 @@ export default {
   created(){
         this.blogArr.forEach(item=>{
             item.src = 'https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a='+Math.random()
+
+           
         })
   },
   methods:{
@@ -62,7 +64,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "../../assets/common.less";
 .img_content{
     height: 320px;
@@ -187,29 +189,4 @@ position: absolute;
     transition: all .3s;
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

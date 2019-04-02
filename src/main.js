@@ -5,17 +5,28 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+
 import store from './store';
 import Util from '@/helpers/util';
 import hoverCss from 'hover.css'//hovercss
 import anime from 'animejs'//anime库
 import vueLazyload from 'vue-lazyload';
+import mavonEditor from 'mavon-editor';//makedown编辑器
+import VueMarkdown from 'vue-markdown';//makedown转h5
+import hljs from 'highlight.js';//代码高亮
 
+import 'highlight.js/styles/googlecode.css'
+import 'element-ui/lib/theme-chalk/index.css';
+import 'mavon-editor/dist/css/index.css'
+import "github-markdown-css/github-markdown.css";
+
+Vue.use(mavonEditor)
 Vue.use(anime)
 Vue.use(hoverCss)//hoverCss useage:'hvr-xxx' http://ianlunn.github.io/Hover/
 Vue.use(ElementUI);
 Vue.use(Util);
+Vue.use(VueMarkdown);
+Vue.use(hljs);
 
 Vue.config.productionTip = false;
 
@@ -23,7 +34,7 @@ Vue.config.productionTip = false;
 Vue.use(vueLazyload);
 Vue.use(vueLazyload,{
   //error:require('./assets/img/nopic.png'),
-  loading:'../static/lazy.jpg'
+  loading:require('./assets/img/lazy.jpg')
 })
 // 图片在static文件夹，就可以直接写路径了
 // Vue.use(VueLazyload, {

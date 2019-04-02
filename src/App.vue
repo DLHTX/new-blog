@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <el-container>
-        <el-header>
-            <Header class='head'></Header>
+        <el-header class='el-header' :class="[isScroll?'scrollToTop':'scrollToDown']">
+            <Header></Header>
         </el-header>
         <el-main>
-            <transition :name="transitionName">
+            <!-- 含有过渡动画的router -->
+            <transition name="custom-classes-transition" :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
                 <router-view name="default" class="child-view"></router-view>
             </transition>
         </el-main>
@@ -32,8 +33,10 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        transitionName: 'slide-left' 
-	}
+        enterAnimate: "animated fadeInUp delay-2s slower",
+        leaveAnimate:"animated fadeOutDown delay-2s slower",
+        isScroll:false
+	} 
   },
   mounted(){
       this.checkLogin()
@@ -58,9 +61,13 @@ export default {
         var scroll = scrollTop - this.i;
         this.i = scrollTop;
         if(scroll<0){
-            console.log('up')
+            if(!this.isScroll) return
+            //console.log('up')
+            this.isScroll=false
         }else{
-            console.log('down')
+            if(this.isScroll) return
+            //console.log('down')
+            this.isScroll=true
         }
     }
   },
@@ -82,19 +89,39 @@ export default {
 
 <style lang="less">
 @import "./assets/common.less";
+@import "assets/css/animate.css";
 #app{
     height: 100%;
     position: relative;
     overflow: hidden;
 }
-// .slide-left-enter, .slide-right-leave-active { 
-//     opacity: 0; 
-//     -webkit-transform: translate(30px, 0); 
-// 　　transform: translate(30px, 0); 
-// } 
-// .slide-left-leave-active, .slide-right-enter { 
-// 　　opacity: 0; 
-// 　　-webkit-transform: translate(-30px, 0); 
-// 　　transform: translate(-30px, 0); 
-// }
+.el-header{
+    transition: all .3s;
+}
+.scrollToTop{
+   animation-name:scroll;
+   animation-duration:.8s;
+   animation-fill-mode: forwards;
+}
+.scrollToDown{
+   animation-name:scrollDown;
+   animation-duration:.8s;
+   animation-fill-mode: forwards;
+}
+@keyframes scroll{
+    0% {
+       top:0
+    }
+    100% {
+        top:-70px
+    }
+}
+@keyframes scrollDown{
+    0% {
+        top:-70px
+    }
+    100% {
+       top:0
+    }
+}
 </style>

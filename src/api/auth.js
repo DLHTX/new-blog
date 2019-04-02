@@ -13,6 +13,7 @@ const URL = {
   LOGIN: 'platform/app/login',
   GET_GRXX: 'jcpt/app/common/grxx',
   TEST: 'bgyd/app/hotel/pageList1',
+  getBlog:'findAllBlogAndCommit'
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -39,5 +40,8 @@ export default {
     test(){
         return request(URL.TEST,'POST',formatData({'page':1,'rows':3}))
     },
+    getBlog(){
+        return request(URL.getBlog,'get')
+    }
 
 }

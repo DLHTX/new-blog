@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import querystring from 'querystring' //序列化请求参数
 // console.log(getLocalStorage("token"))
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-axios.defaults.baseURL = 'http://g4ksmv.natappfree.cc/'
+axios.defaults.baseURL = 'http://237u9405m2.zicp.vip:3000/'
 axios.defaults.withCredentials = true
 
 export default function request(url, type = 'GET', data = {}) {

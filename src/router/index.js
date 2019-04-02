@@ -27,6 +27,11 @@ const router =  new Router({
     {
       path: '/',
       component: () => import('@/pages/index/template.vue')
+    },
+    {
+      path: '/blog',
+      name:'blog',
+      component: () => import('@/pages/blog/template.vue')
     }
   ]
 })
