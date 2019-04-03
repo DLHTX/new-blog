@@ -66,13 +66,13 @@ import Footer from '../../components/Footer/Footer'
 import VueMarkdown from 'vue-markdown'
 
 export default {
-  name: 'index',
-  components: {
-      Header,
-      Footer,
-      VueMarkdown
-  },
-  data(){
+    name: 'index',
+    components: {
+        Header,
+        Footer,
+        VueMarkdown
+    },
+    data(){
         return{
             value:'1111',
             content:''
@@ -86,7 +86,7 @@ export default {
         // })
         // this.content = auth
     },
-  methods:{
+    methods:{
         ...mapActions([
             'getGrxx',
             'checkLogin',
@@ -98,16 +98,15 @@ export default {
             this.content = content.data[0].body
             console.log(this.content)
         },
-
-
-  },
-  computed:{
-      ...mapGetters([
-          'isLogin',
-          'user',
-      ]),
-      
-  }
+        
+    },
+    computed:{
+        ...mapGetters([
+            'isLogin',
+            'user',
+        ]),
+        
+    }
 }
 </script>
 
@@ -129,6 +128,7 @@ export default {
         margin: 0 auto;
         .title{
             font-size: 21px;
+            padding-top: 2rem;
         }
         .title_detail{
             font-size: 12px;
@@ -156,10 +156,11 @@ export default {
     width: 100%;
     height: 100%;
     line-height: normal;
-    background: #f7f7f7;
+    background: #f3f3f3;
     margin: 0;
     padding: 0;
     margin-top: 3rem;
+    border-radius: 3px;
     .commit_box{
         width: 55%;
         height: 10rem;

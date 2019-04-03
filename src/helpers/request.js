@@ -8,6 +8,7 @@ axios.defaults.withCredentials = true
 
 export default function request(url, type = 'GET', data = {}) {
   return new Promise((resolve, reject) => {
+    // url = url + '?_=' + new Date().getTime() //防止get请求缓存返回304
     let option = {
         url,
         method: type

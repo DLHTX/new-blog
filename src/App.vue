@@ -7,14 +7,16 @@
         <el-main>
             <!-- 含有过渡动画的router -->
             <transition name="custom-classes-transition" :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
-                <router-view name="default" class="child-view"></router-view>
+                <router-view name="default" class="child-view" ref="routerView"></router-view>
             </transition>
         </el-main>
         <el-footer>
             <Footer></Footer>
         </el-footer>
     </el-container>
+    <router-view name="login"></router-view>
   </div>
+  
 </template>
 
 <script>
@@ -41,7 +43,6 @@ export default {
   mounted(){
       this.checkLogin()
       window.addEventListener('scroll', this.handleScroll, true)
-
   },
   methods:{
     ...mapActions([
@@ -55,19 +56,19 @@ export default {
             }
         }
     },
-        handleScroll(){
+    handleScroll(){
         // 页面滚动距顶部距离
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         var scroll = scrollTop - this.i;
         this.i = scrollTop;
         if(scroll<0){
             if(!this.isScroll) return
-            //console.log('up')
             this.isScroll=false
+            this.$refs.routerView.showUpBtn(false)
         }else{
             if(this.isScroll) return
-            //console.log('down')
             this.isScroll=true
+            this.$refs.routerView.showUpBtn(true)
         }
     }
   },

@@ -18,7 +18,7 @@ import hljs from 'highlight.js';//代码高亮
 import 'highlight.js/styles/googlecode.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'mavon-editor/dist/css/index.css'
-import "github-markdown-css/github-markdown.css";
+import "github-markdown-css/github-markdown.css"
 
 Vue.use(mavonEditor)
 Vue.use(anime)
@@ -31,10 +31,9 @@ Vue.use(hljs);
 Vue.config.productionTip = false;
 
 // 图片在assets文件夹，就需要使用require（）进行引入。
-Vue.use(vueLazyload);
 Vue.use(vueLazyload,{
   //error:require('./assets/img/nopic.png'),
-  loading:require('./assets/img/lazy.jpg')
+  loading:require('./assets/img/lazy.gif')
 })
 // 图片在static文件夹，就可以直接写路径了
 // Vue.use(VueLazyload, {
