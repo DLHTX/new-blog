@@ -1,12 +1,12 @@
 <template>
 <div style="margin:0;padding:0;">
-    <div class="blog_content">
+    <div class="blog_content" v-loading="loading">
         <div class="blog_head">
-            <div class="title">
-                MAT 分析 Heap Dump 需要关注的指标
+            <div class="title" v-if='title'>
+                {{title}}
             </div>
             <div class="title_detail">Published on Jan 20, 2019 in Tutorials with 2 comments</div>
-            <div class="title_class">Java</div>
+            <div class="title_class" v-if='titleClass'>{{titleClass}}</div>
             <p class="line"></p>
         </div>
         <div class="blog_body markdown-body">
@@ -54,13 +54,20 @@
                 </div> 
             </div>
     </div>
+
+    <i
+      class="iconfont icon-up upBtn animated delay-2s slower"
+      :class="[isShow?'zoomIn':'zoomOut']"
+      @click="scrollToTop()"
+    ></i>
 </div>
 </template>
 
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import auth from '../../api/auth'
+import auth from '../../api/auth';
+import blog from '../../api/blog';
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import VueMarkdown from 'vue-markdown'
@@ -75,10 +82,15 @@ export default {
     data(){
         return{
             value:'1111',
-            content:''
+            content:'',
+            isShow:false,
+            title:'',
+            titleClass:'',
+            loading:false
         }
     },
     created () {
+        console.log(this.$route.query.blogId)
         this.getBlog()
         // auth.getBlog().then(res=>{
         //     this.content = res.data[0].body
@@ -93,11 +105,27 @@ export default {
             'logout',
             'getPermissions'
         ]),
-        getBlog:async function(){
-            let content = await auth.getBlog()
-            this.content = content.data[0].body
-            console.log(this.content)
+        async getBlog(){
+            this.loading = true
+            let res = await blog.findBlogByBlogId(this.$route.query.blogId)
+            if(res.success){
+                let date = res.data[0]
+                this.content = date.body
+                this.title = date.title
+                this.titleClass = date.className
+                this.loading = false
+                console.log(this.title)
+            }
+                
         },
+
+        showUpBtn(boolean){   
+            this.isShow = boolean;
+        },
+
+        scrollToTop() {
+            scrollTo(0, 0);
+        }
         
     },
     computed:{
@@ -113,6 +141,26 @@ export default {
 <style lang="less" scoped>
 @import "../../assets/common.less";
 @import "../../assets/markdown.css";
+.upBtn {
+    font-size: 40px;
+    color: #f78286;
+    position: fixed;
+    top: 80%;
+    left: 93%;
+    cursor: pointer;
+  }
+  .img_content {
+    height: 320px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    img {
+      height: 100%;
+      width: auto;
+      -webkit-transition: all 0.4s;
+      transition: all 0.4s;
+    }
+  }
 
 .blog_content{
     background-color: white;

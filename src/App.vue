@@ -1,20 +1,7 @@
 <template>
   <div id="app">
-    <el-container>
-        <el-header class='el-header' :class="[isScroll?'scrollToTop':'scrollToDown']">
-            <Header></Header>
-        </el-header>
-        <el-main>
-            <!-- 含有过渡动画的router -->
-            <transition name="custom-classes-transition" :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
-                <router-view name="default" class="child-view" ref="routerView"></router-view>
-            </transition>
-        </el-main>
-        <el-footer>
-            <Footer></Footer>
-        </el-footer>
-    </el-container>
-    <router-view name="login"></router-view>
+    <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if='progress.show'></el-progress>
+    <router-view></router-view>
   </div>
   
 </template>
@@ -41,41 +28,45 @@ export default {
 	} 
   },
   mounted(){
-      this.checkLogin()
-      window.addEventListener('scroll', this.handleScroll, true)
+    //   this.checkLogin()
+    //   window.addEventListener('scroll', this.handleScroll, true)
   },
   methods:{
-    ...mapActions([
-        'getGrxx',
-        'getPermissions',
-    ]),
-    checkLogin(){
-        if(localStorage.getItem('token')){
-            if(!this.user){
-                this.getGrxx()//获取user信息
-            }
-        }
-    },
-    handleScroll(){
-        // 页面滚动距顶部距离
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        var scroll = scrollTop - this.i;
-        this.i = scrollTop;
-        if(scroll<0){
-            if(!this.isScroll) return
-            this.isScroll=false
-            this.$refs.routerView.showUpBtn(false)
-        }else{
-            if(this.isScroll) return
-            this.isScroll=true
-            this.$refs.routerView.showUpBtn(true)
-        }
+    showUpBtn(){
+
     }
+    // ...mapActions([
+    //     'getGrxx',
+    //     'getPermissions',
+    // ]),
+    // checkLogin(){
+    //     if(localStorage.getItem('token')){
+    //         if(!this.user){
+    //             this.getGrxx()//获取user信息
+    //         }
+    //     }
+    // },
+    // handleScroll(){
+    //     // 页面滚动距顶部距离
+    //     var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    //     var scroll = scrollTop - this.i;
+    //     this.i = scrollTop;
+    //     if(scroll<0){
+    //         if(!this.isScroll) return
+    //         this.isScroll=false
+    //         this.$refs.routerView.showUpBtn(false)
+    //     }else{
+    //         if(this.isScroll) return
+    //         this.isScroll=true
+    //         this.$refs.routerView.showUpBtn(true)
+    //     }
+    // }
   },
   computed:{
     ...mapGetters([
         'isLogin',
         'user',
+        'progress'
     ]),
     
     
@@ -96,33 +87,8 @@ export default {
     position: relative;
     overflow: hidden;
 }
-.el-header{
-    transition: all .3s;
-}
-.scrollToTop{
-   animation-name:scroll;
-   animation-duration:.8s;
-   animation-fill-mode: forwards;
-}
-.scrollToDown{
-   animation-name:scrollDown;
-   animation-duration:.8s;
-   animation-fill-mode: forwards;
-}
-@keyframes scroll{
-    0% {
-       top:0
-    }
-    100% {
-        top:-70px
-    }
-}
-@keyframes scrollDown{
-    0% {
-        top:-70px
-    }
-    100% {
-       top:0
-    }
+.el-progress {
+    z-index: 999!important;
+    top: -8px!important;
 }
 </style>

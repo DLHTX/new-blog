@@ -4,13 +4,16 @@ import { rejects } from 'assert';
 import { resolve } from 'url';
 import Cookie from 'js-cookie'
 const state = {
+  progress: {progress:{time:0,show:false}},
   user: null,
   isLogin: false,
+ 
 }
 
 const getters = {
   user: state => state.user,
   isLogin: state => state.isLogin,
+  progress: state => state.progress,
 }
 
 const mutations = {
@@ -22,41 +25,65 @@ const mutations = {
     state.isLogin = payload.isLogin
   },
 
+  setProgress(state, payload) {
+    state.progress = payload.progress
+  },
 }
 
 const actions = {
-    login({commit},{ username,password }) {
-        return auth.login({ username, password })
-        .then(res => {
-            console.log(res)
+    async login({commit},{ name,password }) {
+        let res = await auth.login({ name, password })
+        if(res.success) {
             commit('setLogin',{ isLogin: true })
-            let _token = JSON.parse(localStorage.getItem('_token'))
-            delete _token.password
-            _token.loginInfo = res.data.loginInfo
-            setLocalStorage('token',encodeURIComponent(JSON.stringify(_token)))
-            setLocalStorage('permissions',JSON.stringify(res.data.permissions))
-        },err=>{
-            console.log('用户名或者密码错误')
-        }).catch(err=>{
-            return Message.error('用户名或密码错误2')
-        })
+            commit('setUser',{ user: res.userInfo})
+            localStorage.setItem('user', JSON.stringify(res.userInfo))//把用户信息存到localStorage
+            return true
+        }
+        else    
+            commit('setLogin',{ isLogin: false })
+            commit('setUser',{ user:null})
+            return false
     },//登录
 
-    checkLogin({commit}){
-        if(localStorage.getItem('token')){
+    async checkLogin({commit}){
+        //let res = await auth.checkLogin({ name })
+        if(localStorage.getItem('user')){
             commit('setLogin',{ isLogin: true })
+            commit('setUser',{ user: JSON.parse(localStorage.getItem('user'))})
+            return true
         }else{
             commit('setLogin',{ isLogin: false })
+            commit('setUser',{ user:null})
+            return false
         }
     },//检查是否登录
 
     logout({commit}){
-        localStorage.removeItem('token')
-        localStorage.removeItem('permissions')
+        console.log('bb')
+        localStorage.removeItem('user')
         commit('setLogin',{isLogin:false})
         commit('setUser',{user:null})
     },
 
+    showProgress({commit},{status}){
+        let timer 
+        let linear = 0 
+        if(status=='start'){
+            timer = setInterval(() => {
+                linear += 1;
+                commit('setProgress', {progress:{time:linear,show:true}})
+                if(this.getters.progress.time>=100){
+                    clearInterval(timer)
+                    commit('setProgress', {progress:{time:0,show:false}})
+                } 
+            }, 10)
+            console.log(this.getters.progress)
+        }else{
+            clearInterval(timer)
+            commit('setProgress', {progress:{time:0,show:false}})
+            console.log(status)
+        }
+    }
   // async register({ commit }, { username, password }) {
   //   let res = await auth.register({ username, password })
   //   commit('setUser', { user: res.data })
