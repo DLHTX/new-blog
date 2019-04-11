@@ -16,42 +16,30 @@
     <div class="blog_commit">
             <div style="padding: 1rem;">评论</div>
             <div class="commit_box">
-                    <textarea name="text" id="" placeholder="please write your commit here"></textarea>
-                    <div class="btn">提交</div>
+                    <textarea name="text" v-model="commitBody" placeholder="please write your commit here"></textarea>
+                    <div class="btn" @click='fnaddCommit()'>提交</div>
             </div>
-            <div class="comment-view"> 
-                <div class="comment-header"> 
-                    <img class="avatar" src="https://secure.gravatar.com/avatar/42c40e3e677d051d7079b2a1f08807b2?s=80&amp;r=G&amp;d=mm" width="80" height="80"> 
-                    <span class="comment-author"><a href="http://www.miaowenwu.com" target="_blank" rel="external nofollow">妙文屋</a></span> 
-                </div> 
-                <div class="comment-content"> 
-                    <span class="comment-author-at"></span>
-                     <p>写的很好，很喜欢</p>
-                     <p></p> 
-                </div> 
-                <div class="comment-meta"> 
-                    <time class="comment-time">Mar 29, 2019</time>
-                     <span class="comment-reply">
-                         <a href="https://www.linpx.com/p/mat-analysis-of-indicators-for-heap-dump.html/comment-page-1?replyTo=2743#respond-post-334" rel="nofollow" onclick="return TypechoComment.reply('comment-2743', 2743);">Reply</a>
-                    </span> 
-                </div> 
+            <div v-if='blogCommitList'>
+                <div class="comment-view" v-for="commit in blogCommitList" :key="commit.id"> 
+                    <div class="comment-header"> 
+                        <img class="avatar" :src="commit.avatar" width="80" height="80"> 
+                        <span class="comment-author"><a href="http://www.miaowenwu.com" target="_blank" rel="external nofollow">{{commit.commitName}}</a></span> 
+                    </div> 
+                    <div class="comment-content"> 
+                        <span class="comment-author-at"></span>
+                        <p>{{commit.commitBody}}</p>
+                        <p></p> 
+                    </div> 
+                    <div class="comment-meta"> 
+                        <time class="comment-time">{{commit.creat_time}}</time>
+                        <span class="comment-reply">
+                            <a href="https://www.linpx.com/p/mat-analysis-of-indicators-for-heap-dump.html/comment-page-1?replyTo=2743#respond-post-334" rel="nofollow" onclick="return TypechoComment.reply('comment-2743', 2743);">Reply</a>
+                        </span> 
+                    </div> 
+                </div>
             </div>
-              <div class="comment-view"> 
-                <div class="comment-header"> 
-                    <img class="avatar" src="https://secure.gravatar.com/avatar/42c40e3e677d051d7079b2a1f08807b2?s=80&amp;r=G&amp;d=mm" width="80" height="80"> 
-                    <span class="comment-author"><a href="http://www.miaowenwu.com" target="_blank" rel="external nofollow">妙文屋</a></span> 
-                </div> 
-                <div class="comment-content"> 
-                    <span class="comment-author-at"></span>
-                     <p>写的很好，很喜欢</p>
-                     <p></p> 
-                </div> 
-                <div class="comment-meta"> 
-                    <time class="comment-time">Mar 29, 2019</time>
-                     <span class="comment-reply">
-                         <a href="https://www.linpx.com/p/mat-analysis-of-indicators-for-heap-dump.html/comment-page-1?replyTo=2743#respond-post-334" rel="nofollow" onclick="return TypechoComment.reply('comment-2743', 2743);">Reply</a>
-                    </span> 
-                </div> 
+            <div v-if='!blogCommitList' class="comment-view"> 
+                还没有评论哦~
             </div>
     </div>
 
@@ -86,17 +74,13 @@ export default {
             isShow:false,
             title:'',
             titleClass:'',
-            loading:false
+            loading:false,
+            blogCommitList:[],
+            commitBody:''
         }
     },
     created () {
-        console.log(this.$route.query.blogId)
         this.getBlog()
-        // auth.getBlog().then(res=>{
-        //     this.content = res.data[0].body
-        //     console.log(this.content)
-        // })
-        // this.content = auth
     },
     methods:{
         ...mapActions([
@@ -107,6 +91,7 @@ export default {
         ]),
         async getBlog(){
             this.loading = true
+
             let res = await blog.findBlogByBlogId(this.$route.query.blogId)
             if(res.success){
                 let date = res.data[0]
@@ -114,11 +99,24 @@ export default {
                 this.title = date.title
                 this.titleClass = date.className
                 this.loading = false
-                console.log(this.title)
+                this.getBlogCommit()
             }
-                
+     
         },
-
+        async getBlogCommit(){
+            let blogCommitList = await blog.findBlogCommitByBlogId(this.$route.query.blogId)
+            if(blogCommitList.success){
+                this.blogCommitList = blogCommitList.data
+            }
+        },
+        async fnaddCommit(){
+            if(this.commitBody=='') return this.$message({message: '评论内容不可为空',type: 'warning'})
+            let res = await blog.addCommit(this.user.name,this.$route.query.blogId,this.commitBody,this.user.headImg)
+            if(res.success) {
+                this.$message({message: '评论成功',type: 'success'})
+                this.getBlogCommit()
+            }
+        },
         showUpBtn(boolean){   
             this.isShow = boolean;
         },

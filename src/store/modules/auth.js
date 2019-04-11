@@ -77,11 +77,9 @@ const actions = {
                     commit('setProgress', {progress:{time:0,show:false}})
                 } 
             }, 10)
-            console.log(this.getters.progress)
         }else{
             clearInterval(timer)
             commit('setProgress', {progress:{time:0,show:false}})
-            console.log(status)
         }
     }
   // async register({ commit }, { username, password }) {

@@ -1,6 +1,6 @@
   <template>
   <div >
-    <div class="blog_content"  v-loading="loading">
+    <div class="blog_content" >
       <router-link
         :to="{name:'blogDetail',query:{blogId:blog.blogId}}"
         class="blog_item"

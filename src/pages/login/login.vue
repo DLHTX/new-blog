@@ -28,11 +28,11 @@
                 v-model="signInPassword"
               >
             </div>
-            <div class="lowin-btn login-btn" ref="login_btn" @click='fnLogin()' style="text-align: center;">Sign In</div>
+            <div class="lowin-btn login-btn" ref="login_btn" @click='fnLogin()' style="text-align: center;">登录</div>
 
             <div class="text-foot">
               Don't have an account?
-              <span class="register-link" ref="register_link" style="border-bottom: 1px dashed #ffaaaa;color: #ff6464;cursor:pointer;">Register</span>
+              <span class="register-link" ref="register_link" style="border-bottom: 1px dashed #ffaaaa;color: #ff6464;cursor:pointer;" >Register</span>
             </div>
           </form>
         </div>
@@ -60,7 +60,7 @@
                 v-model='registerPassword'
               >
             </div>
-            <button class="lowin-btn">Sign Up</button>
+            <div class="lowin-btn" @click='fnregister()' style="text-align: center;">注册</div>
 
             <div class="text-foot">
               Already have an account?
@@ -97,7 +97,8 @@ export default {
         signInName:'',
         signInPassword:'',
         registerName:'',
-        registerPassword:''
+        registerPassword:'',
+        Auth:''
     };
   },
   mounted() {
@@ -204,7 +205,7 @@ export default {
                 Auth.vars.password_group.classList.remove("lowin-animated-back");
             }, 1000);
 
-            Auth.vars.login_btn.innerText = "Sign In";
+            Auth.vars.login_btn.innerText = "登录";
             Auth.vars.lowin_login
                 .querySelector("form")
                 .setAttribute("action", Auth.vars.option.login_url);
@@ -270,13 +271,34 @@ export default {
             login_url: "#login",
             forgot_url: "#forgot"
         });
+        this.Auth = Auth
     },
 
     async fnLogin(){
-        let res = await this.login({name:this.signInName,password:this.signInPassword})
-        if(res)
-            this.$router.push({path:'/'})
-        console.log(res)
+        try{
+            let res = await this.login({name:this.signInName,password:this.$md5(this.signInPassword)})
+            if(res)  this.$router.push({path:'/'})
+        } catch(err){
+            console.log(err)
+            this.$message.error({message: err.errorMsg})
+
+        }
+    },
+
+    async fnregister(){
+        console.log('fnregister')
+        var uPattern = /^[a-zA-Z0-9_-]{3,16}$/;
+        if(!uPattern.test(this.registerName)) return this.$message({message: '用户名为4到16位',type: 'warning'})
+        try{
+            if(this.registerName==''||this.registerPassword=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
+            let res = await auth.register({name:this.registerName,password:this.$md5(this.registerPassword)})
+            this.$message({message: '注册成功',type: 'success'})
+            this.$router.push({path:'/login'})
+        } catch(err){
+            console.log(err)
+            this.$message.error({message: err.errorMsg})
+
+        }
     }
 
   },

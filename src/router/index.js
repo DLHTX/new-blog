@@ -30,7 +30,7 @@ const router = new Router({
             children:[
                 {   
                     path:'',
-                    meta: { requiresAuth: true },
+                    // meta: { requiresAuth: true },
                     name:'blogList',
                     component: () => import('@/pages/blogList/blogList.vue') //blog子路由
                 },
@@ -58,7 +58,6 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        console.log('aa')
         store.dispatch('checkLogin').then(isLogin => {
             if (!isLogin) {
                 next({

@@ -14,6 +14,7 @@ import vueLazyload from 'vue-lazyload';
 import mavonEditor from 'mavon-editor';//makedown编辑器
 import VueMarkdown from 'vue-markdown';//makedown转h5
 import hljs from 'highlight.js';//代码高亮
+import md5 from 'js-md5';
 
 import 'highlight.js/styles/googlecode.css'
 import 'element-ui/lib/theme-chalk/index.css';
@@ -28,6 +29,7 @@ Vue.use(Util);
 Vue.use(VueMarkdown);
 Vue.use(hljs);
 
+Vue.prototype.$md5 = md5;
 Vue.config.productionTip = false;
 
 // 图片在assets文件夹，就需要使用require（）进行引入。

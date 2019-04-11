@@ -1,30 +1,39 @@
 <template>
   <div class="navbar-container">
-    <router-link :to="{path:'/'}"  class="navbar-logo">
+    <router-link :to="{path:'/'}" class="navbar-logo">
       <img src="../../../img/logo.png">
     </router-link>
     <div class="userInfo">
-        <div v-if="!isLogin">
-            <router-link :to="{name: 'login'}" class="login">SignIn</router-link>
-            <span class="register">register</span>
-        </div>
-        <el-dropdown v-if="isLogin" class="avatar">
-            <span class="el-dropdown-link avatar">
-            <!-- 下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> -->
-                <img :src="user.headImg" alt="">
-            </span>
-            <el-dropdown-menu slot="dropdown" class='dropdown'>
-                <el-dropdown-item><i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的主页</el-dropdown-item>
-                <el-dropdown-item><i class="iconfont icon-shuqian icon" style="color:#eb5055;padding-right: 15px;"></i>我的收藏</el-dropdown-item>
-                <el-dropdown-item><i class="iconfont icon-xihuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的点赞</el-dropdown-item>
-                <el-dropdown-item><i class="iconfont icon-shezhi icon" style="color:#eb5055;padding-right: 15px;"></i>个人中心</el-dropdown-item>
-                <el-dropdown-item divided @click.native='fnLogout()'><i class="iconfont icon-tuichu icon" style="color:#eb5055;padding-right: 15px;"></i>注销用户</el-dropdown-item>
-            </el-dropdown-menu>
-            <router-link :to="{path:'/writeBlog'}" target="_blank"  class="writeBtn">
-                <i class='iconfont icon-shuxiegongju'></i>写博客
-            </router-link>
-          
-        </el-dropdown>
+      <div v-if="!isLogin">
+        <router-link :to="{name: 'login'}" class="login">SignIn</router-link>
+        <span class="register">register</span>
+      </div>
+      <el-dropdown v-if="isLogin" class="avatar">
+        <span class="el-dropdown-link avatar">
+          <!-- 下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> -->
+          <img :src="user.headImg" alt>
+        </span>
+        <el-dropdown-menu slot="dropdown" class="dropdown">
+          <el-dropdown-item>
+            <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的主页
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <i class="iconfont icon-shuqian icon" style="color:#eb5055;padding-right: 15px;"></i>我的收藏
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <i class="iconfont icon-xihuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的点赞
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <i class="iconfont icon-shezhi icon" style="color:#eb5055;padding-right: 15px;"></i>个人中心
+          </el-dropdown-item>
+          <el-dropdown-item divided @click.native="fnLogout()">
+            <i class="iconfont icon-tuichu icon" style="color:#eb5055;padding-right: 15px;"></i>注销用户
+          </el-dropdown-item>
+        </el-dropdown-menu>
+        <router-link :to="{path:'/writeBlog'}" target="_blank" class="writeBtn">
+          <i class="iconfont icon-shuxiegongju"></i>写博客
+        </router-link>
+      </el-dropdown>
     </div>
     <div class="navbar-menu">
       <a href="https://www.linpx.com/archives.html">Archives</a>
@@ -45,14 +54,12 @@ export default {
   data() {
     return {};
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions"]),
-    fnLogout(){
-        console.log('click')
-        this.logout()//注销登录
+    fnLogout() {
+      console.log("click");
+      this.logout(); //注销登录
     }
   },
   computed: {
@@ -67,7 +74,7 @@ export default {
 .userInfo {
   float: right;
   margin-right: 3rem;
-  .writeBtn{
+  .writeBtn {
     background: #fb7377;
     display: flex;
     height: 2rem;
@@ -75,20 +82,20 @@ export default {
     align-items: center;
     color: WHITE;
     border-radius: 22px;
-    padding: 0 .4rem;
+    padding: 0 0.4rem;
     margin-left: 1rem;
     cursor: pointer;
-    transition: all .3s;
-    i{
-        margin-right: 3px;
+    transition: all 0.3s;
+    i {
+      margin-right: 3px;
     }
-    &:hover{
-        box-shadow: 0 0 10px 2px #ffc9cb;
-        transition: all .3s;
+    &:hover {
+      box-shadow: 0 0 10px 2px #ffc9cb;
+      transition: all 0.3s;
     }
-    &:hover i{
-        animation: write 2s infinite;
-        transition: all .3s;
+    &:hover i {
+      animation: write 2s infinite;
+      transition: all 0.3s;
     }
   }
   .login {
@@ -105,19 +112,19 @@ export default {
       transition: all 0.3s;
     }
   }
-  .avatar{
+  .avatar {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 60px;
-    img{
-        height: 35px;
-        cursor:pointer;
+    img {
+      height: 35px;
+      cursor: pointer;
     }
-    .dropdown{
-        .icon{
-            color:#eb5055;
-        }
+    .dropdown {
+      .icon {
+        color: #eb5055;
+      }
     }
   }
   .register {
@@ -149,7 +156,7 @@ export default {
   margin-top: -10px;
   margin-left: 25px;
   text-decoration: none;
-  cursor:pointer;
+  cursor: pointer;
 }
 .navbar-logo img {
   width: auto;
@@ -205,43 +212,44 @@ a:hover {
   content: "";
   background-color: currentColor;
 }
-.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
-    background-color: #e6e6e6;
-    color: #f55b60;
+.el-dropdown-menu__item:focus,
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #e6e6e6;
+  color: #f55b60;
 }
 @keyframes write {
-    0%{
-        transform: rotateZ(-7deg);
-    }
-    10%{
-        transform: rotateZ(7deg);
-    }
-    20%{
-        transform: rotateZ(-4deg);
-    }
-    30%{
-        transform: rotateZ(3deg);
-    }
-    40%{
-        transform: rotateZ(-8deg);
-    }
-    50%{
-        transform: rotateZ(8deg);
-    }
-    60%{
-        transform: rotateZ(-6deg);
-    }
-    70%{
-        transform: rotateZ(6deg);
-    }
-    80%{
-        transform: rotateZ(-5deg);
-    }
-    90%{
-        transform: rotateZ(3deg);
-    }
-    100%{
-        transform: rotateZ(0deg);
-    }
+  0% {
+    transform: rotateZ(-7deg);
+  }
+  10% {
+    transform: rotateZ(7deg);
+  }
+  20% {
+    transform: rotateZ(-4deg);
+  }
+  30% {
+    transform: rotateZ(3deg);
+  }
+  40% {
+    transform: rotateZ(-8deg);
+  }
+  50% {
+    transform: rotateZ(8deg);
+  }
+  60% {
+    transform: rotateZ(-6deg);
+  }
+  70% {
+    transform: rotateZ(6deg);
+  }
+  80% {
+    transform: rotateZ(-5deg);
+  }
+  90% {
+    transform: rotateZ(3deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
 }
 </style>

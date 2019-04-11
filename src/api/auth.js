@@ -9,30 +9,23 @@ let formatData = (data)=>{
 }//序列化请求参数 封装函数
 
 const URL = {
-  REGISTER: 'islogin',
-  ISLOGIN:'islogin',
-  LOGIN: 'login',
-  GET_GRXX: 'jcpt/app/common/grxx',
-  checkLogin: 'islogin',
-  getBlog:'findAllBlogAndCommit'
-  //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
+    register: 'register',
+    ISLOGIN:'islogin',
+    LOGIN: 'login',
+    checkLogin: 'islogin',
+    getBlog:'findAllBlogAndCommit'
+    //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
 export default {
-    register({username, password}) {
-        return request(URL.REGISTER, 'POST', { username, password })
+    register({name, password}) {
+        return request(URL.register, 'POST', formatData({name, password}))
     },
     login({name,password}) {
         return request(URL.LOGIN,'POST',formatData({name,password}))
     },//登录接口
-    getGrxx(username){
-        return request(URL.GET_GRXX,'GET')
-    },//获取个人信息
     checkLogin(){
         return request(URL.checkLogin,'get',formatData({name}))
     },
-    getBlog(){
-        return request(URL.getBlog,'get')
-    }
 
 }

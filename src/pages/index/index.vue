@@ -70,11 +70,12 @@ export default {
         if(scroll<0){
             if(!this.isScroll) return
             this.isScroll=false
-            this.$refs.routerView.showUpBtn(false)
+            this.$refs.routerView.isShow = false 
+           
         }else{
             if(this.isScroll) return
             this.isScroll=true
-            this.$refs.routerView.showUpBtn(true)
+            this.$refs.routerView.isShow = true 
         }
     }
   },
