@@ -14,8 +14,10 @@
           <img :src="user.headImg" alt>
         </span>
         <el-dropdown-menu slot="dropdown" class="dropdown">
-          <el-dropdown-item>
-            <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的主页
+          <el-dropdown-item >
+            <router-link :to="{path:'/myBlog'}">
+                <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的主页
+            </router-link>
           </el-dropdown-item>
           <el-dropdown-item>
             <i class="iconfont icon-shuqian icon" style="color:#eb5055;padding-right: 15px;"></i>我的收藏
@@ -56,7 +58,8 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions"]),
+    ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions",]),
+    
     fnLogout() {
       console.log("click");
       this.logout(); //注销登录

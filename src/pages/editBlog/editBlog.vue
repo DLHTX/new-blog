@@ -39,16 +39,23 @@ export default {
         };
     },
     created(){
-        this.findBlogClass()
+        this.getBlog()
     },
     mounted() {
-
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         showBtn() {},
-
-        async fnSaveBlog(){
+        async getBlog(){
+            let res = await blog.findBlogByBlogId(this.$route.query.blogId)
+            if(res.success){
+                let date = res.data[0]
+                this.markdownValue = date.body
+                this.title = date.title
+                this.blogClass = date.className
+            }
+        },
+        async fnEditBlog(){
             console.log(this.blogClass)
             if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
             let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass)
@@ -80,7 +87,10 @@ export default {
                 }
                 
             })
-        }
+        },
+
+
+
     },
     computed: {
         ...mapGetters(["isLogin", "user"])

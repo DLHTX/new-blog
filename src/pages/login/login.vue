@@ -98,7 +98,7 @@ export default {
         signInPassword:'',
         registerName:'',
         registerPassword:'',
-        Auth:''
+        Auth:'',
     };
   },
   mounted() {

@@ -39,6 +39,12 @@ const router = new Router({
                     meta: { requiresAuth: true },
                     name:'blogDetail',
                     component: () => import('@/pages/blogDetail/blogDetail.vue') //blog子路由
+                },
+                {
+                    path:'/myBlog',
+                    meta: { requiresAuth: true },
+                    name:'myBlog',
+                    component: () => import('@/pages/myBlog/myBlog.vue') //我的所有博客
                 }
             ]
         },
@@ -52,6 +58,12 @@ const router = new Router({
             name: 'writeBlog',
             meta: { requiresAuth: true },
             component: () => import('@/pages/writeBlog/writeBlog.vue')  //写博客页面
+        },
+        {
+            path: '/editBlog',
+            name: 'editBlog',
+            meta: { requiresAuth: true },
+            component: () => import('@/pages/editBlog/editBlog.vue')  //写博客页面
         },
     ]
 })

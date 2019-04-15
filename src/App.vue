@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if='progress.show'></el-progress>
+    <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if="progress.show"></el-progress>
     <router-view></router-view>
   </div>
   
@@ -22,8 +22,8 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        enterAnimate: "animated fadeInUp delay-2s slower",
-        leaveAnimate:"animated fadeOutDown delay-2s slower",
+        enterAnimate: "animated fadeIn delay-2s slower",
+        leaveAnimate:"animated fadeOut delay-2s slower",
         isScroll:false
 	} 
   },
@@ -88,7 +88,10 @@ export default {
     overflow: hidden;
 }
 .el-progress {
-    z-index: 999!important;
-    top: -8px!important;
+    position: absolute!important;
+    height: 8px!important;
+    z-index: 99999!important;
+    width: 100%!important;
+    top: -8px;
 }
 </style>

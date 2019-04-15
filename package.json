@@ -14,7 +14,7 @@
   "dependencies": {
     "animejs": "^2.2.0",
     "axios": "^0.18.0",
-    "element-ui": "^2.3.9",
+    "element-ui": "^2.7.2",
     "github-markdown-css": "^3.0.1",
     "hover.css": "^2.3.2",
     "js-cookie": "^2.2.0",

@@ -26,7 +26,12 @@
       </router-link>
     </div>
     <div style="height: 30px;">
-      <el-pagination layout="prev, pager, next" :total="1000"></el-pagination>
+      <el-pagination  
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage"
+      :page-size="row"
+      layout="total, prev, pager, next"
+      :total="total"></el-pagination>
     </div>
     <i
       class="iconfont icon-up upBtn animated delay-2s slower"
@@ -48,16 +53,23 @@ export default {
         return {
             blogArr: [],
             isShow: false,
-            loading:false
+            loading:false,
+            total:10,
+            row:6,
+            currentPage:1,
         };
     },
     created() {
         this.getAllblog();
     },
     methods: {
+        handleCurrentChange(){
+            console.log(this.currentPage)
+            this.getAllblog()
+        },
         getAllblog: async function() {
             this.loading = true
-            let res = await blog.getBlog();
+            let res = await blog.getBlog({page:this.currentPage,row:this.row});
             if (res.success){
                 this.loading=false
                 this.blogArr = res.data;
@@ -65,9 +77,9 @@ export default {
                     item.src ="https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a=" +Math.random();
                     item.color = this.rgb();
                 });
+                this.total = res.total
                 console.log(this.blogArr);
             }
-
         },
 
         rgb() {

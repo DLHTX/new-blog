@@ -21,7 +21,7 @@
 
 
 <script>
-// import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -38,29 +38,23 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        enterAnimate: "animated fadeInUp delay-2s slower",
-        leaveAnimate:"animated fadeOutDown delay-1s slower",
-        isScroll:false
+        enterAnimate:"animated fadeInUp delay-2s slower",
+        leaveAnimate:"animated fadeOut delay-1s slower",
+        isScroll:false,
 	} 
   },
   mounted(){
       this.checkLogin()
       window.addEventListener('scroll', this.handleScroll, true)
+      console.log(this.$refs.routerView)
   },
   methods:{
-    // ...mapActions([
-    //     'getGrxx',
-    //     'getPermissions',
-    // ]),
+    ...mapActions([
+        'checkLogin',
+        'getPermissions',
+    ]),
     showUpBtn(){
 
-    },
-    checkLogin(){
-        if(localStorage.getItem('token')){
-            if(!this.user){
-                this.getGrxx()//获取user信息
-            }
-        }
     },
     handleScroll(){
         // 页面滚动距顶部距离

@@ -15,16 +15,17 @@ const URL = {
   upImg:'upImg',
   findBlogCommitByBlogId:'findBlogCommitByBlogId',
   addCommit:"addCommit",
-  findBlogClass:"findBlogClass"
+  findBlogClass:"findBlogClass",
+  findBlogByUsername:'findBlogByUsername'
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
 export default {
-    getBlog(){
-        return request(URL.getBlog,'get')
+    getBlog({page,row}){
+        return request(URL.getBlog,'get',{page,row})
     },
     saveBlog(name,title,body,className){
-        return request(URL.saveBlog,'post',formatData({name,title,body,className}))
+        return request(URL.saveBlog,'post',formatData({name,title,body,className}),false)
     },
     findBlogByBlogId(blogId){
         return request(URL.findBlogByBlogId,'get',{blogId})
@@ -40,6 +41,9 @@ export default {
     },
     findBlogClass(){
         return request(URL.findBlogClass,'get')
+    },
+    findBlogByUsername(userName){
+        return request(URL.findBlogByUsername,'get',userName)
     }
 
 }
