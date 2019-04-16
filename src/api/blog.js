@@ -16,7 +16,8 @@ const URL = {
   findBlogCommitByBlogId:'findBlogCommitByBlogId',
   addCommit:"addCommit",
   findBlogClass:"findBlogClass",
-  findBlogByUsername:'findBlogByUsername'
+  findBlogByUsername:'findBlogByUsername',
+  updateBlog:"updateBlog"
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -44,6 +45,9 @@ export default {
     },
     findBlogByUsername(userName){
         return request(URL.findBlogByUsername,'get',userName)
+    },
+    updateBlog(title,body,className,blogId,update_time){
+        return request(URL.updateBlog,'post',formatData({title,body,className,blogId,update_time}))
     }
 
 }

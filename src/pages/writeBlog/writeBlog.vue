@@ -50,15 +50,20 @@ export default {
 
         async fnSaveBlog(){
             console.log(this.blogClass)
-            if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
-            let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass)
-            console.log(res)
-            if(res.success){
-                this.$message({message: '保存成功',type: 'success'})
-                //清空数据
-                this.title=''
-                this.markdownValue = ''
-                this.blogClass = ''
+            try{
+                if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
+                let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass)
+                console.log(res)
+                if(res.success){
+                    this.$message({message: '保存成功',type: 'success'})
+                    //清空数据
+                    this.title=''
+                    this.markdownValue = ''
+                    this.blogClass = ''
+                }
+            }catch(err){
+                console.log(err)
+                this.$message.error({message: err.errorMsg})
             }
         },
         //查找博客分类方法

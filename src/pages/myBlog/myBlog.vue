@@ -5,23 +5,26 @@
             <span>{{user.name}}</span>
         </div>
 
-        <div class="block" style="width: 50%;margin: 0 auto;">
-        <el-timeline>
-            <el-timeline-item 
-                v-for='blog in blogList' 
-                :key='blog.id'
-                :color="blog.color"
-                :timestamp="blog.update_time" 
-                placement="top" 
-                style="height: 12rem;line-height: 2rem;text-align: start;cursor:pointer" 
-                @click.native="fnGoedit(blog.blogId)"
-               >
-                <el-card style="line-height: 1rem;">
-                    <p>{{blog.title}}</p>
-                    <p>{{blog.userName}} 提交于 {{blog.update_time}}</p>
-                </el-card>
-            </el-timeline-item>
-        </el-timeline>
+        <div class="block" style="width: 50%;margin: 0 auto;" v-if="blogList">
+            <el-timeline>
+                <el-timeline-item 
+                    v-for='blog in blogList' 
+                    :key='blog.id'
+                    :color="blog.color"
+                    :timestamp="blog.update_time  | formateDate" 
+                    placement="top" 
+                    style="height: 12rem;line-height: 2rem;text-align: start;cursor:pointer" 
+                    @click.native="fnGoedit(blog.blogId)"
+                >
+                    <el-card style="line-height: 1rem;">
+                        <p>{{blog.title}}</p>
+                        <p>{{blog.userName}} 提交于 {{blog.update_time | formateDate}}</p>
+                    </el-card>
+                </el-timeline-item>
+            </el-timeline>
+        </div>
+        <div v-if='!blogList'>
+            快去写点儿博客吧~
         </div>
     </div>
 </template>
@@ -53,6 +56,7 @@ export default {
         async fnFindBlog(){
             try{
                 let res = await blog.findBlogByUsername({userName:this.user.name})
+                if (res.data == '') return
                 res.data.forEach(item=>{
                     item.color=this.rgb()
                 })
@@ -76,11 +80,21 @@ export default {
         },
         fnGoedit(blogId){
             console.log(blogId)
-            this.$router.push({path: '/editBlog', query:{blogId}})
+            let routeData = this.$router.resolve({ path: '/editBlog', query: {blogId}});
+            window.open(routeData.href, '_blank');
         }
     },
     computed: {
         ...mapGetters(["isLogin", "user"])
+    },
+    filters: {
+        formateDate: function(value){
+            if (!value) return "";
+            value = value.toString();
+            var year = value.split('T')[0], 
+                time = value.split('T')[1].split(':')[0] + ':' + value.split('T')[1].split(':')[1] 
+            return year + ' ' + time
+        }
     }
 };
 </script>
@@ -110,3 +124,4 @@ export default {
 }
 </style>
 
+t

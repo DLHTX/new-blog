@@ -28,7 +28,6 @@ export default function request(url, type = 'GET', data = {},showProgress=true) 
             resolve(res.data)
         } else {
             reject(res.data)
-            console.log('用户名或者密码错误')
         }
     }).catch(err=>{
         reject({msg: '网络异常:'+ err})

@@ -11,7 +11,7 @@
         <div style="height: 90%;overflow: scroll;">
             <mavon-editor v-model="markdownValue" :ishljs = "true" style="height: 100%;" ref=md @imgAdd="$imgAdd"/>
         </div>
-        <div class="btn hvr-hang" @click='fnSaveBlog()'><i class="iconfont icon-baocun"></i></div>
+        <div class="btn hvr-hang" @click='fnEditBlog()'><i class="iconfont icon-baocun"></i></div>
     </div>
 </template>
 
@@ -35,7 +35,8 @@ export default {
             title:'',
             markdownValue:'',
             blogClass:'',
-            blogClassList:[]
+            blogClassList:[],
+            blogUserName:''
         };
     },
     created(){
@@ -53,12 +54,13 @@ export default {
                 this.markdownValue = date.body
                 this.title = date.title
                 this.blogClass = date.className
+                this.blogUserName = date.userName
             }
         },
         async fnEditBlog(){
-            console.log(this.blogClass)
+            if(this.blogUserName !=this.user.name) return this.$message.error({message: '该博客不是你的,无法更改!'})
             if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
-            let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass)
+            let res = await blog.updateBlog(this.title,this.markdownValue,this.blogClass,this.$route.query.blogId,this.getToday())
             console.log(res)
             if(res.success){
                 this.$message({message: '保存成功',type: 'success'})
@@ -88,6 +90,16 @@ export default {
                 
             })
         },
+        getToday(){
+            var data = new Date(),
+                year = data.getFullYear(),
+                month = ((data.getMonth() + 1)) < 10?'0'+(data.getMonth() + 1):(data.getMonth() + 1),
+                day = data.getDate()<10?'0'+data.getDate():data.getDate(),
+                hours = data.getHours()<10?'0'+data.getHours():data.getHours(),
+                minutes = data.getMinutes()<10?'0'+data.getMinutes():data.getMinutes(),
+                seconds = data.getSeconds()<10?'0'+data.getSeconds():data.getSeconds()
+            return year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds
+        }
 
 
 
