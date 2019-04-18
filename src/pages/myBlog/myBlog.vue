@@ -8,17 +8,25 @@
         <div class="block" style="width: 50%;margin: 0 auto;" v-if="blogList">
             <el-timeline>
                 <el-timeline-item 
-                    v-for='blog in blogList' 
+                    v-for='(blog,index) in blogList' 
                     :key='blog.id'
                     :color="blog.color"
                     :timestamp="blog.update_time  | formateDate" 
                     placement="top" 
-                    style="height: 12rem;line-height: 2rem;text-align: start;cursor:pointer" 
-                    @click.native="fnGoedit(blog.blogId)"
-                >
-                    <el-card style="line-height: 1rem;">
-                        <p>{{blog.title}}</p>
-                        <p>{{blog.userName}} 提交于 {{blog.update_time | formateDate}}</p>
+                    style="height: 12rem;line-height: 2rem;text-align: start;cursor:pointer!position: relative!important;cursor:pointer;" 
+                    @click.native="fnGoDetail(blog.blogId)"
+                    @mouseenter.native="enter(index)" 
+                    @mouseleave.native="leave(index)"
+                > 
+                    <el-card style="line-height: 2rem;">
+                        <div class='editBtn' :class='animated' v-if='index==animatedIndex'  @click="fnGoedit(blog.blogId)">编辑</div>
+                        <p style="font-size: 20px;color: rgb(76, 76, 76);">{{blog.title}} </p>
+                        <!-- <div>{{blog.userName}} 提交于 {{blog.update_time | formateDate}}</div> -->
+                        <div>
+                            <span style="color: rgb(105, 105, 105);"><i class="iconfont icon-aixin"></i><span> {{blog.fabulousCount}}</span></span> 
+                            <span style="color: rgb(105, 105, 105);margin-left: 10px;"><i class="iconfont icon-pinglun1"></i><span> {{blog.reviewsCount}}</span></span>
+                            <span style="float: right;color: #a2a2a2;">提交于 {{blog.update_time | formateDate}}</span>
+                        </div>
                     </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -45,7 +53,9 @@ export default {
     },
     data() {
         return {
-            blogList: []
+            blogList: [],
+            animated:'',
+            animatedIndex:null
         };
     },
     created() {
@@ -80,8 +90,19 @@ export default {
         },
         fnGoedit(blogId){
             console.log(blogId)
+            event.stopPropagation()
             let routeData = this.$router.resolve({ path: '/editBlog', query: {blogId}});
             window.open(routeData.href, '_blank');
+        },
+        fnGoDetail(blogId){
+            this.$router.push({ path: '/blogDetail', query: {blogId}})
+        },
+        enter(index){
+            this.animatedIndex = index
+            this.animated = 'animated flipInX fast'
+        },
+        leave(index){
+            this.animated = 'animated flipOutX fast'
         }
     },
     computed: {
@@ -122,6 +143,28 @@ export default {
         padding-left: 2rem;
     }
 }
+
+.el-card {
+    transition:all .3s;
+    &:hover{
+        box-shadow: none!important;
+        // box-shadow: 0 2px 12px 0 rgba(0,0,0,.1)!important;
+        transition:all .3s;
+    }
+}
+.el-card__body {
+    position: relative!important;
+}
+.editBtn{
+    position: absolute;
+    top: 33px;
+    right: 8px;
+    background: #fb7377;
+    color: white;
+    width: 3.5rem;
+    text-align: center;
+    border-radius: 30px;
+    cursor: pointer;
+}
 </style>
 
-t

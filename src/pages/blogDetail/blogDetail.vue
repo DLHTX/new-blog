@@ -2,28 +2,47 @@
 <div style="margin:0;padding:0;">
     <div class="blog_content" v-loading="loading">
         <div class="blog_head">
-            <div class="title" v-if='title'>
+            <div class="title" v-if='title' style="font-size: 36px;">
                 {{title}}
             </div>
-            <div class="title_detail">Published on Jan 20, 2019 in Tutorials with 2 comments</div>
+
+            <div class="title_detail">作者:{{blogDetail.userName}}　最后编辑于:{{blogDetail.update_time | formateDate}}</div>
             <div class="title_class" v-if='titleClass'>{{titleClass}}</div>
             <p class="line"></p>
         </div>
         <div class="blog_body markdown-body">
-            <vue-markdown :source="content" class=""></vue-markdown>
+            <vue-markdown :source="content" class="" ref='md' v-highlightjs="sourcecode"></vue-markdown>
         </div>
     </div>
+    
+    <div class="fave_box"  @click='toggleClass()' :class="fave_active" >
+         <div class="fave" :class="active" ></div> <span>点赞</span> 
+    </div>
+   
     <div class="blog_commit">
             <div style="padding: 1rem;">评论</div>
-            <div class="commit_box">
+            <!-- <div class="commit_box">
                     <textarea name="text" v-model="commitBody" placeholder="please write your commit here"></textarea>
                     <div class="btn" @click='fnaddCommit()'>提交</div>
+            </div> -->
+            <div class="comment-view"> 
+                    <div class="comment-header"> 
+                        <img class="avatar" :src="user.headImg" width="80" height="80"> 
+                        <span class="comment-author">{{user.name}}</span> 
+                    </div> 
+                    <div class="comment-content"> 
+                        <span class="comment-author-at"></span>
+                        <textarea name="text" v-model="commitBody" placeholder="留下你的踪迹~~"></textarea>
+                    </div> 
+                    <div class="comment-meta"> 
+                        <div class="commit_btn" @click='fnaddCommit()'>提交</div>
+                    </div> 
             </div>
             <div v-if='blogCommitList'>
                 <div class="comment-view" v-for="commit in blogCommitList" :key="commit.id"> 
                     <div class="comment-header"> 
                         <img class="avatar" :src="commit.avatar" width="80" height="80"> 
-                        <span class="comment-author"><a href="http://www.miaowenwu.com" target="_blank" rel="external nofollow">{{commit.commitName}}</a></span> 
+                        <span class="comment-author"><a href="" target="_blank" rel="external nofollow">{{commit.commitName}}</a></span> 
                     </div> 
                     <div class="comment-content"> 
                         <span class="comment-author-at"></span>
@@ -31,13 +50,15 @@
                         <p></p> 
                     </div> 
                     <div class="comment-meta"> 
-                        <time class="comment-time">{{commit.creat_time}}</time>
-                        <span class="comment-reply">
+                        <time class="comment-time">{{commit.creat_time | formateDate}}</time>
+                        <!-- <span class="comment-reply">
                             <a href="https://www.linpx.com/p/mat-analysis-of-indicators-for-heap-dump.html/comment-page-1?replyTo=2743#respond-post-334" rel="nofollow" onclick="return TypechoComment.reply('comment-2743', 2743);">Reply</a>
-                        </span> 
+                        </span>  -->
                     </div> 
                 </div>
             </div>
+
+           
             <div v-if='!blogCommitList' class="comment-view"> 
                 还没有评论哦~
             </div>
@@ -69,6 +90,7 @@ export default {
     },
     data(){
         return{
+            blogDetail:{},
             value:'1111',
             content:'',
             isShow:false,
@@ -76,11 +98,16 @@ export default {
             titleClass:'',
             loading:false,
             blogCommitList:[],
-            commitBody:''
+            commitBody:'',
+            active:'',
+            fave_active:''
         }
     },
     created () {
         this.getBlog()
+    },
+    mounted(){
+        console.log(this.$refs.md)
     },
     methods:{
         ...mapActions([
@@ -91,10 +118,15 @@ export default {
         ]),
         async getBlog(){
             this.loading = true
-
             let res = await blog.findBlogByBlogId(this.$route.query.blogId)
             if(res.success){
                 let date = res.data[0]
+                this.blogDetail.content= date.body
+                this.blogDetail.title= date.title
+                this.blogDetail.titleClass= date.className
+                this.blogDetail.update_time = date.update_time
+                this.blogDetail.userName = date.userName
+
                 this.content = date.body
                 this.title = date.title
                 this.titleClass = date.className
@@ -117,13 +149,50 @@ export default {
                 this.getBlogCommit()
             }
         },
+        async addFabulous(){
+            try{
+                let res = await blog.addFabulous(this.user.name,this.$route.query.blogId)
+                if(res.success) {
+                    this.$message({message: '点赞成功!',type: 'success'})
+                }
+            }catch(err){
+                if(err.msg == "已经点赞过了,不要重复点赞") return this.$message({message: '已经点赞过了!',type:"warning"})
+                this.$message.error({message: '点赞失败!'})
+            }
+
+        },
+        async cancelFabulous(){
+            try{
+                let res = await blog.cancelFabulous(this.user.name,this.$route.query.blogId)
+                if(res.success) {
+                    this.$message({message: '取消成功!',type: 'success'})
+                }
+            }catch(err){
+                this.$message.error({message: '取消失败!'})
+            }
+           
+        },
         showUpBtn(boolean){   
             this.isShow = boolean;
         },
 
         scrollToTop() {
             scrollTo(0, 0);
-        }
+        },
+
+        toggleClass(){
+            if(this.fave_active == ''){
+                this.active = 'active'
+                this.fave_active = 'faveActive'
+                this.addFabulous()
+            }else{
+                this.active = ''
+                this.fave_active = ''
+                this.cancelFabulous()
+            }
+        },
+
+
         
     },
     computed:{
@@ -132,6 +201,15 @@ export default {
             'user',
         ]),
         
+    },
+    filters: {
+        formateDate: function(value){
+            if (!value) return "";
+            value = value.toString();
+            var year = value.split('T')[0], 
+                time = value.split('T')[1].split(':')[0] + ':' + value.split('T')[1].split(':')[1] 
+            return year + ' ' + time
+        }
     }
 }
 </script>
@@ -177,9 +255,10 @@ export default {
             padding-top: 2rem;
         }
         .title_detail{
-            font-size: 12px;
+            font-size: 15px;
             color: #5f5f5f;
             margin-top: 8px;
+            margin-left: 15px;
         }
         .title_class{
             color: #fff;
@@ -192,10 +271,47 @@ export default {
             justify-content: center;
             align-items: center;
             margin-top: 8px;
+            min-width: 5rem;
         }
         .line{
             border-bottom: 1px solid #ababab;
         }
+    }
+}
+textarea{
+    width: 90%;
+    border: none;
+    padding: 1rem;
+    margin: 0px;
+    resize: none;
+    overflow: hidden;
+    padding: 20px 0;
+    resize: none;
+    border-radius: 0;
+    outline:none
+}
+.commit_btn{
+    position: absolute;
+        top: 73%;
+        right: 2%;
+        display: flex;
+        height: 28px;
+        margin: 0 auto;
+        padding: 0 20px;
+        justify-content: center;
+        -webkit-transition-duration: .4s;
+        transition-duration: .4s;
+        text-align: center;
+        color: #444444;
+        border: 1px solid #f7f7f7;
+        border-radius: 30px;
+        background-color: #f7f7f7;
+        align-items: center;
+        cursor: pointer;
+        font-size: 15px;
+        &:hover{
+            border:1px solid #eb5055;
+            color:  #eb5055;
     }
 }
 .blog_commit{
@@ -275,7 +391,7 @@ export default {
                 line-height: 45px;
                 display: inline-block;
                 float: left;
-                margin: 0 20px;
+                margin: 0 10px;
             }
         }
         .comment-content {
@@ -295,6 +411,39 @@ export default {
     max-width: 980px;
     margin: 0 auto;
     padding: 0 45px;
+}
+
+.fave_box{
+    margin: 2rem auto;
+    width: 105px;
+    height: 40px;
+    border: 1px solid #f78589;
+    -webkit-transition: all 0.6s;
+    transition: all 0.6s;
+    display: flex;
+    border-radius: 37px;
+    align-items: center;
+    color: #f78589;
+    cursor:pointer;
+}
+.fave {
+  width: 50px;
+  height: 50px;
+  background: url('http://dlhtx.zicp.vip:3000/img/dianzan.png') no-repeat;
+  background-position: left;
+  background-size: auto 100%;
+}
+
+.faveActive{
+  background-color: #EA6F5A!important;
+  transition:all .6s;
+  color: white;
+}
+
+.active {
+  background-position: right;
+  /* 主要在这一步 */
+  transition: background .6s steps(19);
 }
 
 @media (max-width: 767px) {

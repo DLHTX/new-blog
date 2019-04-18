@@ -9,7 +9,7 @@
         </el-select>
       
         <div style="height: 90%;overflow: scroll;">
-            <mavon-editor v-model="markdownValue" :ishljs = "true" style="height: 100%;" ref=md @imgAdd="$imgAdd"/>
+            <mavon-editor :ishljs = "true" v-model="markdownValue"  style="height: 100%;" ref=md @imgAdd="$imgAdd"/>
         </div>
         <div class="btn hvr-hang" @click='fnEditBlog()'><i class="iconfont icon-baocun"></i></div>
     </div>
@@ -41,6 +41,7 @@ export default {
     },
     created(){
         this.getBlog()
+        this.findBlogClass()
     },
     mounted() {
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="lowin lowin-red" style="height: 90vh;overflow: hidden;" ref="lowin">
+  <div class="lowin lowin-red" style="height: 90vh;overflow-y: scroll;" ref="lowin">
     <div class="lowin-brand" ref="lowin_brand">
       <img src="../../assets/img/kodinger.jpg" alt="logo">
     </div>
@@ -13,7 +13,7 @@
                 UserName
                 <a href="#" class="login-back-link" ref="login_back_link">Sign in?</a>
               </label>
-              <input type="text"  class="lowin-input" v-model='signInName'>
+              <input type="text"  class="lowin-input" v-model='signInName' placeholder="enter your username~~">
             </div>
             <div class="lowin-group password-group" ref="password_group">
               <label>
@@ -26,6 +26,7 @@
                 autocomplete="current-password"
                 class="lowin-input"
                 v-model="signInPassword"
+                placeholder="enter your password~~"
               >
             </div>
             <div class="lowin-btn login-btn" ref="login_btn" @click='fnLogin()' style="text-align: center;">登录</div>
@@ -44,7 +45,7 @@
             <p>Let's create your account</p>
             <div class="lowin-group">
               <label>Name</label>
-              <input type="text" name="name" autocomplete="name" class="lowin-input" v-model="registerName">
+              <input type="text" name="name" autocomplete="name" class="lowin-input" v-model="registerName" placeholder="enter your username~~">
             </div>
             <!-- <div class="lowin-group">
               <label>Email</label>
@@ -58,6 +59,18 @@
                 autocomplete="current-password"
                 class="lowin-input"
                 v-model='registerPassword'
+                placeholder="enter your password~~"
+              >
+              <label>
+                Password Again
+              </label>
+              <input
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                class="lowin-input"
+                v-model="registerPassword2"
+                placeholder="enter your password again~~"
               >
             </div>
             <div class="lowin-btn" @click='fnregister()' style="text-align: center;">注册</div>
@@ -73,7 +86,7 @@
 
     <footer class="lowin-footer" ref="lowin_footer">
       Design By
-      <a href="http://fb.me/itskodinger">@itskodinger</a>
+      <a href="http://fb.me/itskodinger">@dlhtx</a>
     </footer>
   </div>
 </template>
@@ -98,7 +111,9 @@ export default {
         signInPassword:'',
         registerName:'',
         registerPassword:'',
+        registerPassword2,
         Auth:'',
+
     };
   },
   mounted() {
@@ -288,6 +303,7 @@ export default {
     async fnregister(){
         console.log('fnregister')
         var uPattern = /^[a-zA-Z0-9_-]{3,16}$/;
+        if(this.registerPassword!=this.registerPassword2) return this.$message({message: '两次密码不一致',type: 'warning'})
         if(!uPattern.test(this.registerName)) return this.$message({message: '用户名为4到16位',type: 'warning'})
         try{
             if(this.registerName==''||this.registerPassword=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
@@ -310,5 +326,17 @@ export default {
 
 <style lang="less" scoped>
 @import "../../assets/css/auth.css";
+input::-webkit-input-placeholder{
+    color:rgb(255, 212, 212);
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:rgb(255, 212, 212);
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:rgb(255, 212, 212);
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color:rgb(255, 212, 212);
+}
 </style>
 

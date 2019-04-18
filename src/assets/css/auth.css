@@ -1,7 +1,11 @@
 body {
 	margin: 0;
 	background-color: #fbfbfb;
-	text-align: center;
+    text-align: center;
+    
+}
+html,body{
+    cursor:url('https://i.loli.net/2018/12/20/5c1b37868327a.bmp'),default ;
 }
 
 .lowin {

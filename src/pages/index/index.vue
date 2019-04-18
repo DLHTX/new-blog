@@ -38,7 +38,7 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        enterAnimate:"animated fadeInUp delay-2s slower",
+        enterAnimate:"animated fadeInUp delay-1s slower",
         leaveAnimate:"animated fadeOut delay-1s slower",
         isScroll:false,
 	} 
@@ -46,6 +46,7 @@ export default {
   mounted(){
       this.checkLogin()
       window.addEventListener('scroll', this.handleScroll, true)
+      
       console.log(this.$refs.routerView)
   },
   methods:{

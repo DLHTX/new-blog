@@ -17,7 +17,9 @@ const URL = {
   addCommit:"addCommit",
   findBlogClass:"findBlogClass",
   findBlogByUsername:'findBlogByUsername',
-  updateBlog:"updateBlog"
+  updateBlog:"updateBlog",
+  addFabulous:"addFabulous",
+  cancelFabulous:"cancelFabulous"
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -48,6 +50,12 @@ export default {
     },
     updateBlog(title,body,className,blogId,update_time){
         return request(URL.updateBlog,'post',formatData({title,body,className,blogId,update_time}))
+    },
+    addFabulous(userName,blogId){
+        return request(URL.addFabulous,'post',formatData({userName,blogId}))
+    },
+    cancelFabulous(userName,blogId){
+        return request(URL.cancelFabulous,'post',formatData({userName,blogId}))
     }
 
 }

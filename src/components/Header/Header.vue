@@ -6,7 +6,7 @@
     <div class="userInfo">
       <div v-if="!isLogin">
         <router-link :to="{name: 'login'}" class="login">SignIn</router-link>
-        <span class="register">register</span>
+        <router-link :to="{name: 'login'}" class="register">register</router-link>
       </div>
       <el-dropdown v-if="isLogin" class="avatar">
         <span class="el-dropdown-link avatar">
@@ -16,7 +16,7 @@
         <el-dropdown-menu slot="dropdown" class="dropdown">
           <el-dropdown-item >
             <router-link :to="{path:'/myBlog'}">
-                <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的主页
+                <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的博客
             </router-link>
           </el-dropdown-item>
           <el-dropdown-item>
@@ -38,9 +38,9 @@
       </el-dropdown>
     </div>
     <div class="navbar-menu">
-      <a href="https://www.linpx.com/archives.html">Archives</a>
-      <a href="https://www.linpx.com/links.html">Links</a>
-      <a href="https://www.linpx.com/about.html">About</a>
+      <a href="#">Archives</a>
+      <a href="#">Links</a>
+      <a href="#">About</a>
     </div>
   </div>
 </template>
