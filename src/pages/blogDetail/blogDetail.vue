@@ -1,14 +1,19 @@
 <template>
 <div style="margin:0;padding:0;">
-    <div class="blog_content" v-loading="loading">
+    <div class="blog_content" >
         <div class="blog_head">
             <div class="title" v-if='title' style="font-size: 36px;">
                 {{title}}
+                <span class="title_class">{{titleClass}}</span>
+                <span class="title_class">{{blogDetail.userName}}</span>
             </div>
-
-            <div class="title_detail">作者:{{blogDetail.userName}}　最后编辑于:{{blogDetail.update_time | formateDate}}</div>
-            <div class="title_class" v-if='titleClass'>{{titleClass}}</div>
-            <p class="line"></p>
+            <div class="title_detail">
+                <span><i class="iconfont icon-time" style="font-size: 17px;"></i>{{blogDetail.update_time | formateDate}} ·</span>
+                <span><i class="iconfont icon-aixin" style="font-size: 14px;"></i> 10赞 ·</span>
+                <span><i class="iconfont icon-pinglun1" style="font-size: 14px;"></i> 21评 ·</span>
+                <span><i class="iconfont icon-yuedu" style="font-size: 15px;"></i> 21读 ·</span>
+                <!-- 作者:{{blogDetail.userName}}　最后编辑于: -->
+            </div>
         </div>
         <div class="blog_body markdown-body">
             <vue-markdown :source="content" class="" ref='md' v-highlightjs="sourcecode"></vue-markdown>
@@ -217,9 +222,10 @@ export default {
 <style lang="less" scoped>
 @import "../../assets/common.less";
 @import "../../assets/markdown.css";
+
 .upBtn {
     font-size: 40px;
-    color: #f78286;
+    color: #a1a1a1;
     position: fixed;
     top: 80%;
     left: 93%;
@@ -256,27 +262,26 @@ export default {
         }
         .title_detail{
             font-size: 15px;
-            color: #5f5f5f;
+            color: #a0a0a0;
             margin-top: 8px;
-            margin-left: 15px;
-        }
-        .title_class{
-            color: #fff;
-            border: 1px solid #6fa3ef;
-            display: inline-block;
-            border-radius: 15px;
-            background: #6fa3ef;
-            width: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 8px;
-            min-width: 5rem;
+            margin-left: 8px;
+            // border-top: 1px solid #d4d4d4;
+            // border-bottom: 1px solid #d4d4d4;
+            padding: 10px 0;
         }
         .line{
             border-bottom: 1px solid #ababab;
         }
     }
+}
+.title_class{
+    background: #969696;
+    color: white;
+    font-size: 18px;
+    border-radius: 4px;
+    padding: 0 10px;
+    border-left: 5px solid #ff8e91;
+    cursor: pointer;
 }
 textarea{
     width: 90%;

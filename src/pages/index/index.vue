@@ -1,7 +1,3 @@
-
-
-
-
 <template>
     <el-container>
         <el-header class='el-header' :class="[isScroll?'scrollToTop':'scrollToDown']">
@@ -53,6 +49,7 @@ export default {
     ...mapActions([
         'checkLogin',
         'getPermissions',
+        'progress'
     ]),
     showUpBtn(){
 

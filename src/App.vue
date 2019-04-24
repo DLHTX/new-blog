@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if="progress.show" style="position: absolute!important;height: 8px!important;z-index: 99999!important;width: 100%!important;top: -8px;"></el-progress>
-    <router-view></router-view>
+    <router-view v-loading="progress.show"></router-view>
   </div>
   
 </template>

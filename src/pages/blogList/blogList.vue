@@ -1,6 +1,6 @@
   <template>
-  <div >
-    <div class="blog_content" >
+  <div  >
+    <div class="blog_content">
       <router-link
         :to="{name:'blogDetail',query:{blogId:blog.blogId}}"
         class="blog_item"
@@ -13,15 +13,15 @@
         <div class="blog_item_body">
           <p>{{blog.body | formateVal(blog.body)}}</p>
         </div>
+        <div class="downloadBtn">下载图片</div>
         <div class="blog_item_back"></div>
         <div class="blog_item_title">
           <p>{{blog.title}}</p>
         </div>
-        <div class="readCount">{{blog.creat_time | formateDate}}</div>
+        <div class="readCount">{{friendlyDate(blog.creat_time)}}</div>
         <div
           class="tip"
           v-if="blog.className"
-          :style="{ 'background-color' : 'rgba'+ blog.color}"
         >{{blog.className}}</div>
       </router-link>
     </div>
@@ -71,11 +71,12 @@ export default {
             this.loading = true
             let res = await blog.getBlog({page:this.currentPage,row:this.row});
             if (res.success){
-                this.loading=false
+                this.loading = false
                 this.blogArr = res.data;
                 this.blogArr.forEach(item => {
                     item.src ="https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a=" +Math.random();
                     item.color = this.rgb();
+                    item.creat_time =  new Date(item.creat_time.split('T')[0]).getTime()
                 });
                 this.total = res.total
                 console.log(this.blogArr);
@@ -90,7 +91,23 @@ export default {
             var rgba = "(" + r + "," + g + "," + b + ",0.5)";
             return rgba;
         },
-
+        getMyDate(str) {
+            var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oTime = oYear +'-'+ addZero(oMonth) +'-'+ addZero(oDay) +' '+ addZero(oHour) +':'+ addZero(oMin) +':'+addZero(oSen);
+            return oTime;
+        },
+        addZero(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        },
         showUpBtn(boolean) {
             this.isShow = boolean;
         },
@@ -111,7 +128,8 @@ export default {
         formateDate: function(value){
             if (!value) return "";
             value = value.toString();
-            return value.split('T')[0]
+            var dateTime =  value.split('T')[0]
+            return  new Date(dateTime).getTime()
         }
     }
 }

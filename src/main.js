@@ -16,6 +16,7 @@ import VueMarkdown from 'vue-markdown';//makedown转h5
 import hljs from 'highlight.js';//代码高亮
 import md5 from 'js-md5';
 import VueHighlightJS from 'vue-highlightjs'
+import Friendly from './helpers/friendly'
 
 import 'highlight.js/styles/googlecode.css'
 import 'element-ui/lib/theme-chalk/index.css';
@@ -24,6 +25,9 @@ import "github-markdown-css/github-markdown.css"
 
 Vue.use(VueHighlightJS)
 Vue.use(mavonEditor)
+
+Vue.use(Friendly)
+
 Vue.use(anime)
 Vue.use(hoverCss)//hoverCss useage:'hvr-xxx' http://ianlunn.github.io/Hover/
 Vue.use(ElementUI);

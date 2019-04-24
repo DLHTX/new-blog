@@ -1,5 +1,5 @@
 <template>
-    <div id="main">
+    <div id="main" onbeforeunload="checkLeave()">
         <el-input placeholder="请输入内容" v-model="title">
             <template slot="prepend" style="color: #ff6b6b;">标题</template>
         </el-input>
@@ -40,14 +40,29 @@ export default {
     },
     created(){
         this.findBlogClass()
+        this.autoSave()
+        console.log('created')
+        // window.onbeforeunload=function(e){
+        // 　　var e = window.event||e;  
+        // 　　e.returnValue=("确定离开当前页面吗？");
+        // } 
     },
     mounted() {
-
+        console.log('mounted')
+        this.initData()
+        window.onbeforeunload=function(e){     
+        　　var e = window.event||e;  
+        　　e.returnValue=("确定离开当前页面吗？");
+            if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){ 
+                alert("你关闭了浏览器"); 
+            }else{ 
+                alert("你正在刷新页面"); 
+            }
+        } 
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         showBtn() {},
-
         async fnSaveBlog(){
             console.log(this.blogClass)
             try{
@@ -57,6 +72,7 @@ export default {
                 if(res.success){
                     this.$message({message: '保存成功',type: 'success'})
                     //清空数据
+                    localStorage.removeItem('blogSave')
                     this.title=''
                     this.markdownValue = ''
                     this.blogClass = ''
@@ -72,6 +88,29 @@ export default {
             if(res.success){
                this.blogClassList = res.data
             }
+        },
+        //初始化数据
+        initData(){
+            if(localStorage.getItem('blogSave')){
+                let blogSave2 = JSON.parse(localStorage.getItem('blogSave'))
+                this.title =  blogSave2.title
+                this.blogClass = blogSave2.blogClass
+                this.markdownValue = blogSave2.body
+            }
+        },
+        autoSave(){
+            setInterval(()=>{
+                this.$message({message: '自动保存!',type: 'success'})
+                let blogSave = {}
+                blogSave.title = this.title //自动保存标题
+                blogSave.blogClass = this.blogClass//自动保存分类
+                blogSave.body = this.markdownValue
+                localStorage.setItem('blogSave', JSON.stringify(blogSave))//把用户信息存到localStorage
+            },10000)
+           
+        },
+        checkLeave(){
+            event.returnValue="确定离开当前页面吗？";
         },
         // 绑定@imgAdd event
         $imgAdd(pos, $file){
