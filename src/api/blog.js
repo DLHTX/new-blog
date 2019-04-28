@@ -19,7 +19,8 @@ const URL = {
   findBlogByUsername:'findBlogByUsername',
   updateBlog:"updateBlog",
   addFabulous:"addFabulous",
-  cancelFabulous:"cancelFabulous"
+  cancelFabulous:"cancelFabulous",
+  addReadCount:"addReadCount",
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -56,6 +57,9 @@ export default {
     },
     cancelFabulous(userName,blogId){
         return request(URL.cancelFabulous,'post',formatData({userName,blogId}))
+    },
+    addReadCount(blogId){
+        return request(URL.addReadCount,'post',formatData({blogId}))
     }
 
 }

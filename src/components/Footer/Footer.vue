@@ -64,7 +64,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["isLogin", "user"])
+        ...mapGetters(["isLogin", "user","progress"])
     }
 };
 </script>

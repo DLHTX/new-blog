@@ -36,18 +36,32 @@ export default {
             markdownValue:'',
             blogClass:'',
             blogClassList:[],
-            blogUserName:''
+            blogUserName:'',
+            interval:''
         };
     },
     created(){
-        this.getBlog()
+        this.initData()
         this.findBlogClass()
+        
     },
     mounted() {
+        
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         showBtn() {},
+        initData(){
+            if(localStorage.getItem('blogSave_edit')){
+                let blogSave2 = JSON.parse(localStorage.getItem('blogSave_edit'))
+                this.title =  blogSave2.title
+                this.blogClass = blogSave2.blogClass
+                this.markdownValue = blogSave2.body
+                this.autoSave()
+            }else{
+                this.getBlog()
+            }
+        },
         async getBlog(){
             let res = await blog.findBlogByBlogId(this.$route.query.blogId)
             if(res.success){
@@ -57,9 +71,10 @@ export default {
                 this.blogClass = date.className
                 this.blogUserName = date.userName
             }
+            this.autoSave()
         },
         async fnEditBlog(){
-            if(this.blogUserName !=this.user.name) return this.$message.error({message: '该博客不是你的,无法更改!'})
+            //if(this.blogUserName !=this.user.name) return this.$message.error({message: '该博客不是你的,无法更改!'})
             if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
             let res = await blog.updateBlog(this.title,this.markdownValue,this.blogClass,this.$route.query.blogId,this.getToday())
             console.log(res)
@@ -69,6 +84,8 @@ export default {
                 this.title=''
                 this.markdownValue = ''
                 this.blogClass = ''
+                localStorage.removeItem('blogSave_edit')
+                //clearInterval(this.interval)
             }
         },
         //查找博客分类方法
@@ -100,14 +117,21 @@ export default {
                 minutes = data.getMinutes()<10?'0'+data.getMinutes():data.getMinutes(),
                 seconds = data.getSeconds()<10?'0'+data.getSeconds():data.getSeconds()
             return year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds
-        }
-
-
-
+        },
+        autoSave(){
+            this.interval = setInterval(()=>{
+                //this.$message({message: '自动保存!',type: 'success'})
+                let blogSave = {}
+                blogSave.title = this.title //自动保存标题
+                blogSave.blogClass = this.blogClass//自动保存分类
+                blogSave.body = this.markdownValue
+                localStorage.setItem('blogSave_edit', JSON.stringify(blogSave))//把用户信息存到localStorage
+            },10000)
+        },
     },
     computed: {
         ...mapGetters(["isLogin", "user"])
-    }
+    },
 };
 </script>
 

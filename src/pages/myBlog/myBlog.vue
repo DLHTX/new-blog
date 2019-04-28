@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="animated fadeInUp">
         <div class="user_head">
             <img :src="user.headImg" height='100' alt="">
             <span>{{user.name}}</span>

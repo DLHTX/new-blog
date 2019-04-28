@@ -1,22 +1,22 @@
 <template>
-<div style="margin:0;padding:0;">
-    <div class="blog_content" >
+<div style="margin:0;padding:0;" class='animated fadeInUp'>
+    <div class="blog_content " >
         <div class="blog_head">
             <div class="title" v-if='title' style="font-size: 36px;">
                 {{title}}
                 <span class="title_class">{{titleClass}}</span>
-                <span class="title_class">{{blogDetail.userName}}</span>
+                <!-- <span class="title_class">{{blogDetail.userName}}</span> -->
             </div>
             <div class="title_detail">
-                <span><i class="iconfont icon-time" style="font-size: 17px;"></i>{{blogDetail.update_time | formateDate}} ·</span>
-                <span><i class="iconfont icon-aixin" style="font-size: 14px;"></i> 10赞 ·</span>
-                <span><i class="iconfont icon-pinglun1" style="font-size: 14px;"></i> 21评 ·</span>
-                <span><i class="iconfont icon-yuedu" style="font-size: 15px;"></i> 21读 ·</span>
+                <span><i class="iconfont icon-time" style="font-size: 17px;"></i>发布于{{blogDetail.update_time | formateDate}} By <span style="color: #fb7377;">{{blogDetail.userName}}</span> ·</span>
+                <span><i class="iconfont icon-aixin" style="font-size: 14px;"></i> {{blogDetail.fabulousCount}}赞 ·</span>
+                <span><i class="iconfont icon-pinglun1" style="font-size: 14px;"></i> {{blogDetail.reviewsCount}}评 ·</span>
+                <span><i class="iconfont icon-yuedu" style="font-size: 15px;"></i> {{blogDetail.readcount}}读 </span>
                 <!-- 作者:{{blogDetail.userName}}　最后编辑于: -->
             </div>
         </div>
         <div class="blog_body markdown-body">
-            <vue-markdown :source="content" class="" ref='md' v-highlightjs="sourcecode"></vue-markdown>
+            <vue-markdown :source="content" class="" ref='md'></vue-markdown>
         </div>
     </div>
     
@@ -110,6 +110,7 @@ export default {
     },
     created () {
         this.getBlog()
+        this.addReadCount()//阅读数量
     },
     mounted(){
         console.log(this.$refs.md)
@@ -126,11 +127,7 @@ export default {
             let res = await blog.findBlogByBlogId(this.$route.query.blogId)
             if(res.success){
                 let date = res.data[0]
-                this.blogDetail.content= date.body
-                this.blogDetail.title= date.title
-                this.blogDetail.titleClass= date.className
-                this.blogDetail.update_time = date.update_time
-                this.blogDetail.userName = date.userName
+                this.blogDetail = date
 
                 this.content = date.body
                 this.title = date.title
@@ -161,7 +158,7 @@ export default {
                     this.$message({message: '点赞成功!',type: 'success'})
                 }
             }catch(err){
-                if(err.msg == "已经点赞过了,不要重复点赞") return this.$message({message: '已经点赞过了!',type:"warning"})
+                if(err.msg == "已经点赞过了,不要重复点赞") return this.$message({message: '重复点赞伤身体哦~!',type:"warning"})
                 this.$message.error({message: '点赞失败!'})
             }
 
@@ -175,14 +172,43 @@ export default {
             }catch(err){
                 this.$message.error({message: '取消失败!'})
             }
-           
+        },
+        async addReadCount(){
+            try{
+                let res = await blog.addReadCount(this.$route.query.blogId)
+                if(res.success) {
+                    //this.$message({message: '阅读成功!',type: 'success'})
+
+                }
+            }catch(err){
+                //this.$message.error({message: '阅读失败!'})
+            }
         },
         showUpBtn(boolean){   
             this.isShow = boolean;
         },
-
         scrollToTop() {
-            scrollTo(0, 0);
+            //scrollTo(0, 0);
+            this.scrollAnimation(document.documentElement.scrollTop || document.body.scrollTop, 0)
+        },
+        scrollAnimation(currentY, targetY) {
+            // 获取当前位置方法
+            // const currentY = document.documentElement.scrollTop || document.body.scrollTop
+            // 计算需要移动的距离
+            let needScrollTop = targetY - currentY
+            let _currentY = currentY
+            setTimeout(() => {
+            // 一次调用滑动帧数，每次调用会不一样
+                const dist = Math.ceil(needScrollTop / 10)
+                _currentY += dist
+                window.scrollTo(_currentY, currentY)
+                // 如果移动幅度小于十个像素，直接移动，否则递归调用，实现动画效果
+                if (needScrollTop > 10 || needScrollTop < -10) {
+                    this.scrollAnimation(_currentY, targetY)
+                } else {
+                    window.scrollTo(_currentY, targetY)
+                }
+            }, 1)
         },
 
         toggleClass(){

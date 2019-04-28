@@ -5,7 +5,7 @@
         </el-header>
         <el-main>
             <!-- 含有过渡动画的router -->
-            <transition name="custom-classes-transition" :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
+            <transition name="custom-classes-transition" :enter-active-class="enterAnimate" >
                 <router-view  class="child-view" ref="routerView"></router-view>
             </transition>
         </el-main>
@@ -34,8 +34,8 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        enterAnimate:"animated fadeInUp delay-1s slower",
-        leaveAnimate:"animated fadeOut delay-1s slower",
+        enterAnimate:"animated fadeInUp",
+        leaveAnimate:"animated fadeOut",
         isScroll:false,
 	} 
   },

@@ -21,7 +21,7 @@
     "js-md5": "^0.7.3",
     "jsencrypt": "^3.0.0-rc.1",
     "less-loader": "^4.1.0",
-    "marked": "^0.4.0",
+    "marked": "^0.6.2",
     "mavon-editor": "^2.7.3",
     "querystring": "^0.2.0",
     "vue": "^2.5.2",

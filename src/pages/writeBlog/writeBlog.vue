@@ -35,7 +35,8 @@ export default {
             title:'',
             markdownValue:'',
             blogClass:'',
-            blogClassList:[]
+            blogClassList:[],
+            interval:''
         };
     },
     created(){
@@ -50,15 +51,15 @@ export default {
     mounted() {
         console.log('mounted')
         this.initData()
-        window.onbeforeunload=function(e){     
-        　　var e = window.event||e;  
-        　　e.returnValue=("确定离开当前页面吗？");
-            if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){ 
-                alert("你关闭了浏览器"); 
-            }else{ 
-                alert("你正在刷新页面"); 
-            }
-        } 
+        // window.onbeforeunload=function(e){     
+        // 　　var e = window.event||e;  
+        // 　　e.returnValue=("确定离开当前页面吗？");
+        //     if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){ 
+        //         alert("你关闭了浏览器"); 
+        //     }else{ 
+        //         alert("你正在刷新页面"); 
+        //     }
+        // } 
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
@@ -73,6 +74,7 @@ export default {
                     this.$message({message: '保存成功',type: 'success'})
                     //清空数据
                     localStorage.removeItem('blogSave')
+                    //clearInterval(this.interval)
                     this.title=''
                     this.markdownValue = ''
                     this.blogClass = ''
@@ -99,8 +101,8 @@ export default {
             }
         },
         autoSave(){
-            setInterval(()=>{
-                this.$message({message: '自动保存!',type: 'success'})
+            this.interval = setInterval(()=>{
+                //this.$message({message: '自动保存!',type: 'success'})
                 let blogSave = {}
                 blogSave.title = this.title //自动保存标题
                 blogSave.blogClass = this.blogClass//自动保存分类

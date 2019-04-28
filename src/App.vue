@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if="progress.show" style="position: absolute!important;height: 8px!important;z-index: 99999!important;width: 100%!important;top: -8px;"></el-progress>
-    <router-view v-loading="progress.show"></router-view>
+        <router-view  class="child-view" ref="routerView"></router-view>
   </div>
   
 </template>
@@ -22,8 +22,8 @@ export default {
         showStyle:false,
         isRun:false,
         slogan:null,
-        enterAnimate: "animated fadeIn delay-2s slower",
-        leaveAnimate:"animated fadeOut delay-2s slower",
+        enterAnimate:"animated fadeInUp",
+        leaveAnimate:"animated fadeOutDown",
         isScroll:false
 	} 
   },

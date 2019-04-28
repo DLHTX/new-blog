@@ -1,9 +1,9 @@
   <template>
-  <div  >
+  <div>
     <div class="blog_content">
       <router-link
         :to="{name:'blogDetail',query:{blogId:blog.blogId}}"
-        class="blog_item"
+        class="blog_item animated fadeInUp"
         v-for="(blog,index) in blogArr"
         :key="index"
       >
@@ -13,7 +13,6 @@
         <div class="blog_item_body">
           <p>{{blog.body | formateVal(blog.body)}}</p>
         </div>
-        <div class="downloadBtn">下载图片</div>
         <div class="blog_item_back"></div>
         <div class="blog_item_title">
           <p>{{blog.title}}</p>
@@ -113,7 +112,27 @@ export default {
         },
 
         scrollToTop() {
-            scrollTo(0, 0);
+            //scrollTo(0, 0);
+            this.scrollAnimation(document.documentElement.scrollTop || document.body.scrollTop, 0)
+        },
+        scrollAnimation(currentY, targetY) {
+            // 获取当前位置方法
+            // const currentY = document.documentElement.scrollTop || document.body.scrollTop
+            // 计算需要移动的距离
+            let needScrollTop = targetY - currentY
+            let _currentY = currentY
+            setTimeout(() => {
+            // 一次调用滑动帧数，每次调用会不一样
+                const dist = Math.ceil(needScrollTop / 10)
+                _currentY += dist
+                window.scrollTo(_currentY, currentY)
+                // 如果移动幅度小于十个像素，直接移动，否则递归调用，实现动画效果
+                if (needScrollTop > 10 || needScrollTop < -10) {
+                    this.scrollAnimation(_currentY, targetY)
+                } else {
+                    window.scrollTo(_currentY, targetY)
+                }
+            }, 1)
         }
     },
     computed: {
