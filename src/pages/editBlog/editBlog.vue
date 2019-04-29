@@ -41,25 +41,28 @@ export default {
         };
     },
     created(){
-        this.initData()
         this.findBlogClass()
-        
     },
     mounted() {
-        
+        this.getBlog()
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         showBtn() {},
-        initData(){
+        checkSame(){
             if(localStorage.getItem('blogSave_edit')){
                 let blogSave2 = JSON.parse(localStorage.getItem('blogSave_edit'))
-                this.title =  blogSave2.title
-                this.blogClass = blogSave2.blogClass
-                this.markdownValue = blogSave2.body
-                this.autoSave()
-            }else{
-                this.getBlog()
+                console.log(this.title ==  blogSave2.title,this.title, blogSave2.title)
+                if(this.title ==  blogSave2.title){
+                    console.log('标题相同可以渲染!')
+                    this.title =  blogSave2.title
+                    this.blogClass = blogSave2.blogClass
+                    this.markdownValue = blogSave2.body
+                    this.autoSave()
+                }else{
+                    console.log('标题不相同不可以渲染!')
+                    this.autoSave()
+                }
             }
         },
         async getBlog(){
@@ -70,6 +73,7 @@ export default {
                 this.title = date.title
                 this.blogClass = date.className
                 this.blogUserName = date.userName
+                this.checkSame() //判断自动保存是否一致
             }
             this.autoSave()
         },

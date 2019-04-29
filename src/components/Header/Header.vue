@@ -15,7 +15,7 @@
         </span>
         <el-dropdown-menu slot="dropdown" class="dropdown">
           <el-dropdown-item >
-            <router-link :to="{path:'/myBlog'}">
+            <router-link :to="{path:'/myBlog' , query: { userName: user.name}}">
                 <i class="iconfont icon-wodedangxuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的博客
             </router-link>
           </el-dropdown-item>
@@ -38,9 +38,9 @@
       </el-dropdown>
     </div>
     <div class="navbar-menu">
-      <a href="#">Archives</a>
-      <a href="#">Links</a>
-      <a href="#">About</a>
+        <router-link :to="{path:'/myBlog' , query: { userName: 'dlhtx'}}">Archives</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:666}}">Links</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:888}}">About</router-link>
     </div>
   </div>
 </template>

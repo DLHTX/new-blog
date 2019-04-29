@@ -45,7 +45,7 @@ const router = new Router({
                     meta: { requiresAuth: true },
                     name:'myBlog',
                     component: () => import('@/pages/myBlog/myBlog.vue') //我的所有博客
-                }
+                },
             ]
         },
         {

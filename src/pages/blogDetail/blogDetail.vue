@@ -5,10 +5,11 @@
             <div class="title" v-if='title' style="font-size: 36px;">
                 {{title}}
                 <span class="title_class">{{titleClass}}</span>
+                <span class="title_class" style="background: #fb7377;" @click='fnGoedit()' v-if='user.name==blogDetail.userName'>编辑</span>
                 <!-- <span class="title_class">{{blogDetail.userName}}</span> -->
             </div>
             <div class="title_detail">
-                <span><i class="iconfont icon-time" style="font-size: 17px;"></i>发布于{{blogDetail.update_time | formateDate}} By <span style="color: #fb7377;">{{blogDetail.userName}}</span> ·</span>
+                <span><i class="iconfont icon-time" style="font-size: 17px;"></i>最后编辑于{{blogDetail.creat_time | formateDate}} By <span style="color: #fb7377;">{{blogDetail.userName}}</span> ·</span>
                 <span><i class="iconfont icon-aixin" style="font-size: 14px;"></i> {{blogDetail.fabulousCount}}赞 ·</span>
                 <span><i class="iconfont icon-pinglun1" style="font-size: 14px;"></i> {{blogDetail.reviewsCount}}评 ·</span>
                 <span><i class="iconfont icon-yuedu" style="font-size: 15px;"></i> {{blogDetail.readcount}}读 </span>
@@ -24,7 +25,7 @@
          <div class="fave" :class="active" ></div> <span>点赞</span> 
     </div>
    
-    <div class="blog_commit">
+    <div class="blog_commit">                                                                                                                                                                                                                                 
             <div style="padding: 1rem;">评论</div>
             <!-- <div class="commit_box">
                     <textarea name="text" v-model="commitBody" placeholder="please write your commit here"></textarea>
@@ -68,12 +69,6 @@
                 还没有评论哦~
             </div>
     </div>
-
-    <i
-      class="iconfont icon-up upBtn animated delay-2s slower"
-      :class="[isShow?'zoomIn':'zoomOut']"
-      @click="scrollToTop()"
-    ></i>
 </div>
 </template>
 
@@ -98,7 +93,6 @@ export default {
             blogDetail:{},
             value:'1111',
             content:'',
-            isShow:false,
             title:'',
             titleClass:'',
             loading:false,
@@ -128,7 +122,6 @@ export default {
             if(res.success){
                 let date = res.data[0]
                 this.blogDetail = date
-
                 this.content = date.body
                 this.title = date.title
                 this.titleClass = date.className
@@ -148,6 +141,7 @@ export default {
             let res = await blog.addCommit(this.user.name,this.$route.query.blogId,this.commitBody,this.user.headImg)
             if(res.success) {
                 this.$message({message: '评论成功',type: 'success'})
+                this.blogDetail.reviewsCount = this.blogDetail.reviewsCount + 1
                 this.getBlogCommit()
             }
         },
@@ -156,12 +150,12 @@ export default {
                 let res = await blog.addFabulous(this.user.name,this.$route.query.blogId)
                 if(res.success) {
                     this.$message({message: '点赞成功!',type: 'success'})
+                    this.blogDetail.fabulousCount = this.blogDetail.fabulousCount + 1
                 }
             }catch(err){
                 if(err.msg == "已经点赞过了,不要重复点赞") return this.$message({message: '重复点赞伤身体哦~!',type:"warning"})
                 this.$message.error({message: '点赞失败!'})
             }
-
         },
         async cancelFabulous(){
             try{
@@ -184,33 +178,11 @@ export default {
                 //this.$message.error({message: '阅读失败!'})
             }
         },
-        showUpBtn(boolean){   
-            this.isShow = boolean;
+        fnGoedit(blogId){
+            event.stopPropagation()
+            let routeData = this.$router.resolve({ path: '/editBlog', query: { blogId:this.$route.query.blogId }});
+            window.open(routeData.href, '_blank');
         },
-        scrollToTop() {
-            //scrollTo(0, 0);
-            this.scrollAnimation(document.documentElement.scrollTop || document.body.scrollTop, 0)
-        },
-        scrollAnimation(currentY, targetY) {
-            // 获取当前位置方法
-            // const currentY = document.documentElement.scrollTop || document.body.scrollTop
-            // 计算需要移动的距离
-            let needScrollTop = targetY - currentY
-            let _currentY = currentY
-            setTimeout(() => {
-            // 一次调用滑动帧数，每次调用会不一样
-                const dist = Math.ceil(needScrollTop / 10)
-                _currentY += dist
-                window.scrollTo(_currentY, currentY)
-                // 如果移动幅度小于十个像素，直接移动，否则递归调用，实现动画效果
-                if (needScrollTop > 10 || needScrollTop < -10) {
-                    this.scrollAnimation(_currentY, targetY)
-                } else {
-                    window.scrollTo(_currentY, targetY)
-                }
-            }, 1)
-        },
-
         toggleClass(){
             if(this.fave_active == ''){
                 this.active = 'active'
@@ -301,13 +273,21 @@ export default {
     }
 }
 .title_class{
-    background: #969696;
     color: white;
+    height: 1rem;
     font-size: 18px;
-    border-radius: 4px;
+    background: #46C496;
+    border-radius: 15px;
+    transition: all .3s;
     padding: 0 10px;
-    border-left: 5px solid #ff8e91;
     cursor: pointer;
+    &:hover{
+        color: #5f5f5f!important;
+        // border: 1px solid #f7f7f7;
+        outline-style: none;
+        background: #f7f7f7!important;
+        transition: all .3s;
+    }
 }
 textarea{
     width: 90%;

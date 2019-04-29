@@ -1,11 +1,11 @@
 <template>
     <div class="animated fadeInUp">
-        <div class="user_head">
+        <div class="user_head" v-if='this.$route.query.userName==user.name'>
             <img :src="user.headImg" height='100' alt="">
             <span>{{user.name}}</span>
         </div>
 
-        <div class="block" style="width: 50%;margin: 0 auto;" v-if="blogList">
+        <div class="block" style="width: 50%;margin: 2rem auto;" v-if="blogList">
             <el-timeline>
                 <el-timeline-item 
                     v-for='(blog,index) in blogList' 
@@ -19,7 +19,7 @@
                     @mouseleave.native="leave(index)"
                 > 
                     <el-card style="line-height: 2rem;">
-                        <div class='editBtn' :class='animated' v-if='index==animatedIndex'  @click="fnGoedit(blog.blogId)">编辑</div>
+                        <div class='editBtn' :class='animated' v-if='index==animatedIndex && user.name==blog.userName'  @click="fnGoedit(blog.blogId)">编辑</div>
                         <p style="font-size: 20px;color: rgb(76, 76, 76);">{{blog.title}} </p>
                         <!-- <div>{{blog.userName}} 提交于 {{blog.update_time | formateDate}}</div> -->
                         <div>
@@ -65,7 +65,7 @@ export default {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         async fnFindBlog(){
             try{
-                let res = await blog.findBlogByUsername({userName:this.user.name})
+                let res = await blog.findBlogByUsername({userName:this.$route.query.userName})
                 if (res.data == '') return
                 res.data.forEach(item=>{
                     item.color=this.rgb()

@@ -1,9 +1,13 @@
 <template>
-    <i
-      class="iconfont icon-up upBtn animated delay-2s slower"
-      :class="[isShow?'zoomIn':'zoomOut']"
-      @click="scrollToTop()"
-    ></i>
+    <span :class="[isShow?'fadeInRight':'fadeOutRight']">
+        <i
+        class="iconfont icon-shang  animated delay-2s slower upBtn"
+        :class="[isShow?'fadeInRight':'fadeOutRight']"
+        style="font-size:25px;color:white;"
+        @click="scrollToTop()"
+        ></i>
+    </span>
+
 </template>
 
 
@@ -12,7 +16,7 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
-    name: "Footer",
+    name: "upBtn",
     components: {},
     data() {
         return {
@@ -20,11 +24,33 @@ export default {
         };
     },
     mounted() {
-        this.binft(document.getElementById('binft'))
+        ///this.handleScroll()
+        console.log('upbtn mounted...')
     },
     methods: {
         ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions"]),
-
+        scrollToTop() {
+            this.scrollAnimation(document.documentElement.scrollTop || document.body.scrollTop, 0)
+        },
+        scrollAnimation(currentY, targetY) {
+            // 获取当前位置方法
+            // const currentY = document.documentElement.scrollTop || document.body.scrollTop
+            // 计算需要移动的距离
+            let needScrollTop = targetY - currentY
+            let _currentY = currentY
+            setTimeout(() => {
+            // 一次调用滑动帧数，每次调用会不一样
+                const dist = Math.ceil(needScrollTop / 10)
+                _currentY += dist
+                window.scrollTo(_currentY, currentY)
+                // 如果移动幅度小于十个像素，直接移动，否则递归调用，实现动画效果
+                if (needScrollTop > 10 || needScrollTop < -10) {
+                    this.scrollAnimation(_currentY, targetY)
+                } else {
+                    window.scrollTo(_currentY, targetY)
+                }
+            }, 1)
+        },
     },
     computed: {
         ...mapGetters(["isLogin", "user","progress"])
@@ -39,8 +65,16 @@ export default {
     color: #f78286;
     position: fixed;
     top: 80%;
-    left: 93%;
+    right: 0;
     cursor: pointer;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 2px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dedede;
   }
   .img_content {
     height: 320px;

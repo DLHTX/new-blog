@@ -76,7 +76,7 @@ const actions = {
                     clearInterval(timer)
                     commit('setProgress', {progress:{time:0,show:false}})
                 } 
-            }, 10)
+            },30)
         }else{
             clearInterval(timer)
             commit('setProgress', {progress:{time:0,show:false}})

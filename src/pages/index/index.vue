@@ -8,6 +8,7 @@
             <transition name="custom-classes-transition" :enter-active-class="enterAnimate" >
                 <router-view  class="child-view" ref="routerView"></router-view>
             </transition>
+            <upBtn ref='upBtn'></upBtn>
         </el-main>
         <el-footer>
             <Footer></Footer>
@@ -21,13 +22,15 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import upBtn from "../../components/upBtn/upBtn";
 import blog from "../../api/blog";
 
 export default {
   name: "index",
   components: {
     Header,
-    Footer
+    Footer,
+    upBtn
   },
   data(){
 	return{
@@ -62,12 +65,11 @@ export default {
         if(scroll<0){
             if(!this.isScroll) return
             this.isScroll=false
-            this.$refs.routerView.isShow = false 
-           
+            this.$refs.upBtn.isShow = false
         }else{
             if(this.isScroll) return
             this.isScroll=true
-            this.$refs.routerView.isShow = true 
+            this.$refs.upBtn.isShow = true 
         }
     }
   },
