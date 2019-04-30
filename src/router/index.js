@@ -46,6 +46,12 @@ const router = new Router({
                     name:'myBlog',
                     component: () => import('@/pages/myBlog/myBlog.vue') //我的所有博客
                 },
+                {
+                    path:'/my',
+                    meta: { requiresAuth: true },
+                    name:'my',
+                    component: () => import('@/pages/my/my.vue') //个人中心
+                },
             ]
         },
         {

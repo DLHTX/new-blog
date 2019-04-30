@@ -21,6 +21,7 @@ const URL = {
   addFabulous:"addFabulous",
   cancelFabulous:"cancelFabulous",
   addReadCount:"addReadCount",
+  changeHeadImg:'changeHeadImg'
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -60,6 +61,9 @@ export default {
     },
     addReadCount(blogId){
         return request(URL.addReadCount,'post',formatData({blogId}))
+    },
+    changeHeadImg(headImg,userName,password){
+        return request(URL.changeHeadImg,'post',formatData({headImg,userName,password}))
     }
 
 }

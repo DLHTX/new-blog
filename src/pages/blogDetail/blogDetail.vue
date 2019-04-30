@@ -172,7 +172,6 @@ export default {
                 let res = await blog.addReadCount(this.$route.query.blogId)
                 if(res.success) {
                     //this.$message({message: '阅读成功!',type: 'success'})
-
                 }
             }catch(err){
                 //this.$message.error({message: '阅读失败!'})

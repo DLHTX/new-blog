@@ -11,7 +11,7 @@
       <el-dropdown v-if="isLogin" class="avatar">
         <span class="el-dropdown-link avatar">
           <!-- 下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> -->
-          <img :src="user.headImg" alt>
+          <img :src="user.headImg" alt style="border-radius:50%;">
         </span>
         <el-dropdown-menu slot="dropdown" class="dropdown">
           <el-dropdown-item >
@@ -26,7 +26,9 @@
             <i class="iconfont icon-xihuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的点赞
           </el-dropdown-item>
           <el-dropdown-item>
-            <i class="iconfont icon-shezhi icon" style="color:#eb5055;padding-right: 15px;"></i>个人中心
+            <router-link :to="{path:'/my' , query: { userName: user.name}}">
+                <i class="iconfont icon-shezhi icon" style="color:#eb5055;padding-right: 15px;"></i>个人中心
+            </router-link>
           </el-dropdown-item>
           <el-dropdown-item divided @click.native="fnLogout()">
             <i class="iconfont icon-tuichu icon" style="color:#eb5055;padding-right: 15px;"></i>注销用户
