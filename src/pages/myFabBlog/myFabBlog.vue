@@ -65,7 +65,7 @@ export default {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
         async fnFindBlog(){
             try{
-                let res = await blog.findBlogByUsername({userName:this.$route.query.userName})
+                let res = await blog.findFabByUsername({userName:this.$route.query.userName})
                 if (res.data == '') return
                 res.data.forEach(item=>{
                     item.color=this.rgb()

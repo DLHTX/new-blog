@@ -22,6 +22,7 @@ import auth from "../../api/auth";
 import blog from "../../api/blog";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import { setTimeout } from 'timers';
 // import Auth from "../../helpers/loginAnimate.js";
 
 export default {
@@ -89,6 +90,9 @@ export default {
                 this.markdownValue = ''
                 this.blogClass = ''
                 localStorage.removeItem('blogSave_edit')
+                setTimeout(()=>{
+                    window.close();
+                },1000)
                 //clearInterval(this.interval)
             }
         },

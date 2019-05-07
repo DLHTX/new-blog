@@ -78,6 +78,9 @@ export default {
                     this.title=''
                     this.markdownValue = ''
                     this.blogClass = ''
+                    setTimeout(()=>{
+                        window.close();
+                    },1000)
                 }
             }catch(err){
                 console.log(err)

@@ -79,13 +79,11 @@ export default {
     getAllblog: async function() {
       this.loading = true;
       try {
-        let res = await blog.getBlog({ page: this.currentPage, row: this.row });
+        let res = await blog.findAllBlogByclassName({ className:this.$route.query.className , page: this.currentPage, row: this.row });
         this.loading = false;
         this.blogArr = res.data;
         this.blogArr.forEach(item => {
-          item.src =
-            "https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a=" +
-            Math.random();
+          item.src ="https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture&a=" + Math.random();
           item.color = this.rgb();
           item.creat_time = new Date(item.creat_time.split("T")[0]).getTime();
         });

@@ -47,10 +47,22 @@ const router = new Router({
                     component: () => import('@/pages/myBlog/myBlog.vue') //我的所有博客
                 },
                 {
+                    path:'/myFabBlog',
+                    meta: { requiresAuth: true },
+                    name:'myFabBlog',
+                    component: () => import('@/pages/myFabBlog/myFabBlog.vue') //我的所有博客
+                },
+                {
                     path:'/my',
                     meta: { requiresAuth: true },
                     name:'my',
                     component: () => import('@/pages/my/my.vue') //个人中心
+                },
+                {
+                    path:'/blogCard',
+                    meta: { requiresAuth: true },
+                    name:'blogCard',
+                    component: () => import('@/pages/blogCard/blogCard.vue') //卡片式的列表
                 },
             ]
         },

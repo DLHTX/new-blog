@@ -20,10 +20,9 @@
             </router-link>
           </el-dropdown-item>
           <el-dropdown-item>
-            <i class="iconfont icon-shuqian icon" style="color:#eb5055;padding-right: 15px;"></i>我的收藏
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <i class="iconfont icon-xihuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的点赞
+            <router-link :to="{path:'/myFabBlog' , query: { userName: user.name}}">
+                <i class="iconfont icon-xihuan icon" style="color:#eb5055;padding-right: 15px;"></i>我的点赞
+            </router-link>
           </el-dropdown-item>
           <el-dropdown-item>
             <router-link :to="{path:'/my' , query: { userName: user.name}}">
@@ -43,6 +42,7 @@
         <router-link :to="{path:'/myBlog' , query: { userName: 'dlhtx'}}">Archives</router-link>
         <router-link :to="{name:'blogDetail',query:{blogId:666}}">Links</router-link>
         <router-link :to="{name:'blogDetail',query:{blogId:888}}">About</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:12319}}">Logs</router-link>
     </div>
   </div>
 </template>

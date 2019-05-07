@@ -21,13 +21,19 @@ const URL = {
   addFabulous:"addFabulous",
   cancelFabulous:"cancelFabulous",
   addReadCount:"addReadCount",
-  changeHeadImg:'changeHeadImg'
+  changeHeadImg:'changeHeadImg',
+  updatedUserInfo:'updatedUserInfo',
+  findAllBlogByclassName:'findAllBlogByclassName',
+  findFabByUsername:'findFabByUsername'
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
 export default {
     getBlog({page,row}){
         return request(URL.getBlog,'get',{page,row})
+    },
+    findAllBlogByclassName({className,page,row}){
+        return request(URL.findAllBlogByclassName,'get',{className,page,row})
     },
     saveBlog(name,title,body,className){
         return request(URL.saveBlog,'post',formatData({name,title,body,className}),false)
@@ -64,6 +70,11 @@ export default {
     },
     changeHeadImg(headImg,userName,password){
         return request(URL.changeHeadImg,'post',formatData({headImg,userName,password}))
+    },
+    updatedUserInfo(nickName,info,sex,name,password){
+        return request(URL.updatedUserInfo,'post',formatData({nickName,info,sex,name,password}))
+    },
+    findFabByUsername(userName){
+        return request(URL.findFabByUsername,'get',userName)
     }
-
 }

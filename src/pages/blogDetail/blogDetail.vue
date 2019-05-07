@@ -4,7 +4,11 @@
         <div class="blog_head">
             <div class="title" v-if='title' style="font-size: 36px;">
                 {{title}}
-                <span class="title_class">{{titleClass}}</span>
+                <router-link
+                :to="{name:'blogCard',query:{className:titleClass}}"
+                >
+                    <span class="title_class">{{titleClass}}</span>
+                </router-link>
                 <span class="title_class" style="background: #fb7377;" @click='fnGoedit()' v-if='user.name==blogDetail.userName'>编辑</span>
                 <!-- <span class="title_class">{{blogDetail.userName}}</span> -->
             </div>
@@ -34,7 +38,8 @@
             <div class="comment-view"> 
                     <div class="comment-header"> 
                         <img class="avatar" :src="user.headImg" width="80" height="80"> 
-                        <span class="comment-author">{{user.name}}</span> 
+                        <span class="comment-author" v-if='!user.nickName'>{{user.name}}</span> 
+                        <span class="comment-author" v-if='user.nickName'>{{user.nickName}}</span> 
                     </div> 
                     <div class="comment-content"> 
                         <span class="comment-author-at"></span>
@@ -47,8 +52,17 @@
             <div v-if='blogCommitList'>
                 <div class="comment-view" v-for="commit in blogCommitList" :key="commit.id"> 
                     <div class="comment-header"> 
-                        <img class="avatar" :src="commit.avatar" width="80" height="80"> 
-                        <span class="comment-author"><a href="" target="_blank" rel="external nofollow">{{commit.commitName}}</a></span> 
+                        <img class="avatar" :src="commit.avatar" width="80" height="80">
+                        <span class="comment-author" v-if='!commit.nickName'>{{commit.commitName}}
+                            <span v-if='commit.sex=="男"' style="float: right;"><i class="iconfont icon-nan" style="font-size: 17px;color: #73b5fb;"></i></span>
+                            <span v-if='commit.sex=="女"' style="float: right;"><i class="iconfont icon-nv" style="font-size: 17px;color: #fb7377;"></i></span>
+                            <span v-if='commit.sex=="外星人"' style="float: right;"><i class="iconfont icon-waixingren" style="font-size: 17px;color: #c76aff;"></i></span>
+                        </span> 
+                        <span class="comment-author" v-if='commit.nickName'>{{commit.nickName}} 
+                            <span v-if='commit.sex=="男"' style="float: right;"><i class="iconfont icon-nan" style="font-size: 17px;color: #73b5fb;"></i></span>
+                            <span v-if='commit.sex=="女"' style="float: right;"><i class="iconfont icon-nv" style="font-size: 17px;color: #fb7377;"></i></span>
+                            <span v-if='commit.sex=="外星人"' style="float: right;"><i class="iconfont icon-waixingren" style="font-size: 17px;color: #c76aff;"></i></span>
+                        </span> 
                     </div> 
                     <div class="comment-content"> 
                         <span class="comment-author-at"></span>
@@ -276,7 +290,7 @@ export default {
     height: 1rem;
     font-size: 18px;
     background: #46C496;
-    border-radius: 15px;
+    border-radius: 3px;
     transition: all .3s;
     padding: 0 10px;
     cursor: pointer;

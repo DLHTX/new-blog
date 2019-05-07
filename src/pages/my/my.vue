@@ -17,24 +17,24 @@
                 </div>
             </el-form-item>
             <el-form-item label="昵称">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.nickName"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-                <el-radio-group v-model="form.resource" label="left" style="">
+                <el-radio-group v-model="form.sex" label="left" style="">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
                     <el-radio label="外星人"></el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="爱好">
+            <!-- <el-form-item label="爱好">
                 <el-checkbox-group v-model="form.type" label="left">
                     <el-checkbox label="男" name="type"></el-checkbox>
                     <el-checkbox label="女" name="type"></el-checkbox>
                     <el-checkbox label="男女" name="type"></el-checkbox>
                 </el-checkbox-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="个人简介">
-                <el-input type="textarea" v-model="form.desc"></el-input>
+                <el-input type="textarea" v-model="form.info"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -50,25 +50,33 @@
 
     export default {
         data() {
-        return {
-            form: {
-                name: '',
-                region: '',
-                date1: '',
-                date2: '',
-                delivery: false,
-                type: [],
-                resource: '',
-                desc: '',
-            },
-            fileList:[],
-            sendedImg:''
-        }
+            return {
+                form: {
+                    nickName: '',
+                    sex: '',
+                    info: '',
+                },
+                fileList:[],
+                sendedImg:'',
+                password:''
+            }
+        },
+        mounted(){
+            this.checkUserInfo()
         },
         methods: {
             ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions",]),
-            onSubmit() {
-                console.log('submit!');
+            checkUserInfo(){
+                if(this.user.nickName) this.form.nickName = this.user.nickName
+                if(this.user.sex) this.form.sex = this.user.sex
+                if(this.user.info) this.form.info = this.user.info
+            },
+            onSubmit(){
+                if(this.password){
+                    this.updatedUserInfo(this.form.nickName,this.form.info,this.sex,this.user.name,this.password)
+                }else{
+                    this.checkUser('','updatedUserInfo')
+                }
             },
             $imgAdd(pos, $file){
                 //上传图片接口
@@ -105,7 +113,7 @@
                     blog.upImg(base64Str).then(res=>{
                         if(res.success){
                             //this.$message({message: '图片上传成功',type: 'success'})
-                            this.checkUser(res.data)
+                            this.checkUser(res.data,'changeHeadImg')
                             //this.sendedImg = res.data 图片回显
                         }else{
                             this.$message.error({message: '上传图片失败'})
@@ -114,12 +122,17 @@
                     })
                 }
             },
-            checkUser(url){
+            checkUser(url,fun){
                 this.$prompt('请输入密码', '身份认证', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
-                    this.changeHeadImg(url,this.$md5(value))
+                    this.password = this.$md5(value)
+                    if(fun=='changeHeadImg'){
+                        this.changeHeadImg(url,this.$md5(value))
+                    }else if(fun=='updatedUserInfo'){
+                        this.updatedUserInfo(this.form.nickName,this.form.info,this.form.sex,this.user.name,this.password)
+                    }
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -148,7 +161,27 @@
                         message: '头像更改失败!请检查密码'
                     });
                 }
-            }
+            },
+            async updatedUserInfo(nickName,info,sex,name,password){
+                try{
+                    let res = await blog.updatedUserInfo(nickName,info,sex,name,password)
+                    this.$message({
+                        type: 'success',
+                        message: '信息更新成功!请重新登录'
+                    });
+                    setTimeout(res=>{
+                        this.logout()
+                            setTimeout(res=>{
+                                this.$router.push({path:'/login'})
+                            },1000)
+                    },2000)
+                    console.log(res)
+                }catch(err){
+                    this.$message.error({
+                        message: '信息更新失败!请检查密码'
+                    });
+                }
+            },
         },
         computed: {
             ...mapGetters(["isLogin", "user"])
