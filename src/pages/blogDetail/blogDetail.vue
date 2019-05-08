@@ -9,7 +9,7 @@
                 >
                     <span class="title_class">{{titleClass}}</span>
                 </router-link>
-                <span class="title_class" style="background: #fb7377;" @click='fnGoedit()' v-if='user.name==blogDetail.userName'>编辑</span>
+                <span class="title_class" style="background: linear-gradient(45deg,rgb(251, 115, 119), #f5c46c);" @click='fnGoedit()' v-if='user.name==blogDetail.userName'>编辑</span>
                 <!-- <span class="title_class">{{blogDetail.userName}}</span> -->
             </div>
             <div class="title_detail">
@@ -289,7 +289,7 @@ export default {
     color: white;
     height: 1rem;
     font-size: 18px;
-    background: #46C496;
+    background: linear-gradient(45deg, #46c496, #6c94f5);
     border-radius: 3px;
     transition: all .3s;
     padding: 0 10px;

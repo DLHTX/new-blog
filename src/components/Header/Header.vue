@@ -80,7 +80,7 @@ export default {
   float: right;
   margin-right: 3rem;
   .writeBtn {
-    background: #fb7377;
+    background: linear-gradient(45deg,rgb(241, 81, 86), #f3d922);
     display: flex;
     height: 2rem;
     justify-content: center;
