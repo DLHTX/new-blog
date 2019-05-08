@@ -44,7 +44,7 @@ export default {
   },
   mounted(){
       this.checkLogin()
-      window.addEventListener('scroll', this.handleScroll, true)
+      //window.addEventListener('scroll', this.handleScroll, true)
       
       console.log(this.$refs.routerView)
   },
@@ -57,21 +57,21 @@ export default {
     showUpBtn(){
 
     },
-    handleScroll(){
-        // 页面滚动距顶部距离
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        var scroll = scrollTop - this.i;
-        this.i = scrollTop;
-        if(scroll<0){
-            if(!this.isScroll) return
-            this.isScroll=false
-            this.$refs.upBtn.isShow = false
-        }else{
-            if(this.isScroll) return
-            this.isScroll=true
-            this.$refs.upBtn.isShow = true 
-        }
-    }
+    // handleScroll(){
+    //     // 页面滚动距顶部距离
+    //     var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    //     var scroll = scrollTop - this.i;
+    //     this.i = scrollTop;
+    //     if(scroll<0){
+    //         if(!this.isScroll) return
+    //         this.isScroll=false
+    //         this.$refs.upBtn.isShow = false
+    //     }else{
+    //         if(this.isScroll) return
+    //         this.isScroll=true
+    //         this.$refs.upBtn.isShow = true 
+    //     }
+    // }
   },
 };
 </script>

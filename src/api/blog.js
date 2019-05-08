@@ -48,7 +48,7 @@ export default {
         return request(URL.findBlogCommitByBlogId,'get',{blogId})
     },
     addCommit(commitName,blogId,commitBody,avatar){
-        return request(URL.addCommit,'post',formatData({commitName,blogId,commitBody,avatar}))
+        return request(URL.addCommit,'post',formatData({commitName,blogId,commitBody,avatar}),false)
     },
     findBlogClass(){
         return request(URL.findBlogClass,'get')
@@ -60,10 +60,10 @@ export default {
         return request(URL.updateBlog,'post',formatData({title,body,className,blogId,update_time}))
     },
     addFabulous(userName,blogId){
-        return request(URL.addFabulous,'post',formatData({userName,blogId}))
+        return request(URL.addFabulous,'post',formatData({userName,blogId}),false)
     },
     cancelFabulous(userName,blogId){
-        return request(URL.cancelFabulous,'post',formatData({userName,blogId}))
+        return request(URL.cancelFabulous,'post',formatData({userName,blogId}),false)
     },
     addReadCount(blogId){
         return request(URL.addReadCount,'post',formatData({blogId}))
