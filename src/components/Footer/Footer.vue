@@ -1,5 +1,5 @@
 <template>
-  <div class="social-list">
+  <div class="social-list" >
     <p style="font-size: 10px;">Copyright © 2019 Bin 'Blog - DLHTX</p>
     <p id="binft"></p>
   </div>

@@ -3,6 +3,9 @@
         <el-input placeholder="请输入内容" v-model="title">
             <template slot="prepend" style="color: #ff6b6b;">标题</template>
         </el-input>
+        <el-input placeholder="请输入图片地址(请在下方编辑器中上传图片,然后会出现图片地址,之后将其复制过来)" v-model="bgImg">
+            <template slot="prepend" style="color: #ff6b6b;">封面</template>
+        </el-input>
         
         <el-select placeholder="请选择博客分类" style="width:100%" v-model="blogClass">
             <el-option :label="blogclass.className" :value="blogclass.className" v-for='blogclass in blogClassList' :key="blogclass.id"></el-option>
@@ -12,6 +15,7 @@
             <mavon-editor v-model="markdownValue" :ishljs = "true" style="height: 100%;" ref=md @imgAdd="$imgAdd"/>
         </div>
         <div class="btn hvr-hang" @click='fnSaveBlog()'><i class="iconfont icon-baocun"></i></div>
+        <a href="#" data-title="Awesome Button" @mousemove="move(this)" @mouseleave='leave(this)' @mousedown="down()" @mouseup="up()"></a>
     </div>
 </template>
 
@@ -36,7 +40,8 @@ export default {
             markdownValue:'',
             blogClass:'',
             blogClassList:[],
-            interval:''
+            interval:'',
+            bgImg:''
         };
     },
     created(){
@@ -68,7 +73,7 @@ export default {
             console.log(this.blogClass)
             try{
                 if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
-                let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass)
+                let res = await blog.saveBlog(this.user.name,this.title,this.markdownValue,this.blogClass,this.bgImg)
                 console.log(res)
                 if(res.success){
                     this.$message({message: '保存成功',type: 'success'})
@@ -139,6 +144,56 @@ export default {
 
 <style lang="less" scoped>
 @import "../../assets/css/auth.css";
+a {
+	position: relative;
+	display: inline-block;
+	padding: 1.2em 2em;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+	user-select: none;
+	color: white;
+	
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: linear-gradient(135deg, #6e8efb, #a777e3);
+		border-radius: 4px;
+		transition: box-shadow .5s ease, transform .2s ease; 
+		will-change: transform;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+		transform:
+			translateY(var(--ty, 0))
+			rotateX(var(--rx, 0))
+			rotateY(var(--ry, 0))
+			translateZ(var(--tz, -12px));
+	}
+	
+	&:hover::before {
+		box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
+	}
+	
+	&::after {
+		position: relative;
+		display: inline-block;
+		content: attr(data-title);
+		transition: transform .2s ease; 
+		font-weight: bold;
+		letter-spacing: .01em;
+		will-change: transform;
+		transform:
+			translateY(var(--ty, 0))
+			rotateX(var(--rx, 0))
+			rotateY(var(--ry, 0));
+	}
+}
+
+
+
 #main{
     height: 100vh;
 }

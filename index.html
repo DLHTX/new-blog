@@ -1,23 +1,97 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_796940_p3olkt0lzvd.css">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_796940_2jly9yuzec8.css">
     <link rel="shortcut icon" href="http://dlhtx.zicp.vip:3000/img/favicon.ico" type="image/x-icon" />
     <link href='http://cdn.webfont.youziku.com/webfonts/nomal/116166/46758/5ca44f9ff629d80628b8f761.css' rel='stylesheet' type='text/css' />
     <title>DLHTX的博客园</title>
+    <script src="https://cdn.bootcss.com/smoothscroll/1.4.10/SmoothScroll.js"></script>
     <script type="text/javascript" src="http://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>
     <script type="text/javascript">
-      $youziku.load("body", "89033e36465148f6b3c77d19eaf4e166", "Source-Han-Light");
-      $youziku.draw();
-      console.log("                                           \n                                           \n                                           \n                   ``..`                   \n               ,::::::::::::               \n             :::::::::::::::::`            \n           :::::::::::::::::::::           \n         `:::::::::::::::::::::::,         \n        ,::::::::::::::::::::::::::        \n       ,:::::::`  `::::::   .:::::::       \n      `:::::::      :::`      :::::::      \n      :::::::        :,        ::::::`     \n     :::::::.     ;; `  '.     :::::::     \n    `:::::::      ''   '''     ,::::::,    \n    ::::::::      ''   `';     ,:::::::    \n    ::::::::                   ::::::::.   \n   .::::::::                   :::::::::   \n   ::::::::                     ,:::::::   \n   :::::::                       ,::::::   \n   ::::::                         ::::::   \n   :::::`            :`            :::::`  \n   ::::::::::.      :::       .:::::::::`  \n   ::::.  `,::::    `::     ::::,`  ::::   \n   ::::              ;              ::::   \n   :::::::::::::     ;      ::::::::::::   \n   ,:::              ;              ,:::   \n    :::  .,:::::     ;      ::::::. ,:::   \n    ::::::::.;`      ;       ; .,::::::    \n    :::      ,;`     ;      ;;      :::    \n     ::       ,;;.   ;    ;;;       ::.    \n     ::,        ;;;;;;;;;;;`        ::     \n      ::             ```           ::`     \n      ,:.                          ::      \n       ::                         ::       \n        ::                       ::        \n         ,,,,,,,,,,,,,,,,,,,,,,,,,`        \n        ,,,,,,,,,,,,,,,,,,,,,,,,,,,        \n        ,,,,,,,,,,,,,,,,,,,,,,,,,,,        \n         ,,,,,,,,,,,,,,,,,,,,,,,,,,        \n                                           \n                                           \n                                           \n                                           \n")
+        $youziku.load("body", "89033e36465148f6b3c77d19eaf4e166", "Source-Han-Light");
+        $youziku.draw();
     </script>
-  </head>
-  <body>
+    <script>
+        (function() {
+            var event = document.addEventListener ? {
+                    add: 'addEventListener',
+                    triggers: ['scroll', 'mousemove', 'keyup', 'touchstart'],
+                    load: 'DOMContentLoaded'
+                } : {
+                    add: 'attachEvent',
+                    triggers: ['onfocus', 'onmousemove', 'onkeyup', 'ontouchstart'],
+                    load: 'onload'
+                },
+                added = false;
+
+            document[event.add](event.load, function() {
+                var r = document.getElementById('respond-post-6'),
+                    input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = '_';
+                input.value = (function() {
+                    var _XwsgHab = '66' //'x'
+                        + //'h'
+                        'e41' + '0' //'N'
+                        +
+                        'a1' //'3'
+                        + //'hrG'
+                        'c' + //'iP'
+                        '4a' + //'1D'
+                        'd1d' + 'u04' //'u04'
+                        +
+                        '8' //'ev'
+                        +
+                        /* 'N'//'N' */ '' + 'c70' //'MsI'
+                        +
+                        'e' //'5'
+                        + //'QF2'
+                        'c4' + //'Bsk'
+                        'e31' + '90b' //'d'
+                        +
+                        '2' //'5'
+                        + //'ea8'
+                        'a' + /* '07'//'07' */ '' + //'7'
+                        '3b3',
+                        _esqwny = [
+                            [14, 17]
+                        ];
+
+                    for (var i = 0; i < _esqwny.length; i++) {
+                        _XwsgHab = _XwsgHab.substring(0, _esqwny[i][0]) + _XwsgHab.substring(_esqwny[i][1]);
+                    }
+
+                    return _XwsgHab;
+                })();
+
+                if (null != r) {
+                    var forms = r.getElementsByTagName('form');
+                    if (forms.length > 0) {
+                        function append() {
+                            if (!added) {
+                                forms[0].appendChild(input);
+                                added = true;
+                            }
+                        }
+
+                        for (var i = 0; i < event.triggers.length; i++) {
+                            var trigger = event.triggers[i];
+                            document[event.add](trigger, append);
+                            window[event.add](trigger, append);
+                        }
+                    }
+                }
+            });
+        })();
+    </script>
+</head>
+
+<body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-  </body>
+</body>
+
 </html>
-
-

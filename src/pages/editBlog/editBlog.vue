@@ -3,13 +3,16 @@
         <el-input placeholder="请输入内容" v-model="title">
             <template slot="prepend" style="color: #ff6b6b;">标题</template>
         </el-input>
-        
+        <el-input placeholder="请输入图片地址(请在下方编辑器中上传图片,然后会出现图片地址,之后将其复制过来)" v-model="bgImg">
+            <template slot="prepend" style="color: #ff6b6b;">封面</template>
+        </el-input>
         <el-select placeholder="请选择博客分类" style="width:100%" v-model="blogClass">
-            <el-option :label="blogclass.className" :value="blogclass.className" v-for='blogclass in blogClassList' :key="blogclass.id"></el-option>
+            <el-option :label="blogclass.className" :value="blogclass.className" v-for='blogclass in blogClassList'
+                :key="blogclass.id"></el-option>
         </el-select>
-      
+
         <div style="height: 90%;overflow: scroll;">
-            <mavon-editor :ishljs = "true" v-model="markdownValue"  style="height: 100%;" ref=md @imgAdd="$imgAdd"/>
+            <mavon-editor :ishljs="true" v-model="markdownValue" style="height: 100%;" ref=md @imgAdd="$imgAdd" />
         </div>
         <div class="btn hvr-hang" @click='fnEditBlog()'><i class="iconfont icon-baocun"></i></div>
     </div>
@@ -33,15 +36,16 @@ export default {
     },
     data() {
         return {
-            title:'',
-            markdownValue:'',
-            blogClass:'',
-            blogClassList:[],
-            blogUserName:'',
-            interval:''
+            title: '',
+            markdownValue: '',
+            blogClass: '',
+            blogClassList: [],
+            blogUserName: '',
+            interval: '',
+            bgImg:''
         };
     },
-    created(){
+    created() {
         this.findBlogClass()
     },
     mounted() {
@@ -49,26 +53,27 @@ export default {
     },
     methods: {
         ...mapActions(["login", "checkLogin", "logout", "getPermissions"]),
-        showBtn() {},
-        checkSame(){
-            if(localStorage.getItem('blogSave_edit')){
+        showBtn() { },
+        checkSame() {
+            if (localStorage.getItem('blogSave_edit')) {
                 let blogSave2 = JSON.parse(localStorage.getItem('blogSave_edit'))
-                console.log(this.title ==  blogSave2.title,this.title, blogSave2.title)
-                if(this.title ==  blogSave2.title){
+                console.log(this.title == blogSave2.title, this.title, blogSave2.title)
+                if (this.title == blogSave2.title) {
                     console.log('标题相同可以渲染!')
-                    this.title =  blogSave2.title
+                    this.title = blogSave2.title
+                    this.bgImg = blogSave2.bgImg ? blogSave2.bgImg : ''
                     this.blogClass = blogSave2.blogClass
                     this.markdownValue = blogSave2.body
                     this.autoSave()
-                }else{
+                } else {
                     console.log('标题不相同不可以渲染!')
                     this.autoSave()
                 }
             }
         },
-        async getBlog(){
+        async getBlog() {
             let res = await blog.findBlogByBlogId(this.$route.query.blogId)
-            if(res.success){
+            if (res.success) {
                 let date = res.data[0]
                 this.markdownValue = date.body
                 this.title = date.title
@@ -78,63 +83,63 @@ export default {
             }
             this.autoSave()
         },
-        async fnEditBlog(){
+        async fnEditBlog() {
             //if(this.blogUserName !=this.user.name) return this.$message.error({message: '该博客不是你的,无法更改!'})
-            if(this.title==''||this.markdownValue==''||this.blogClass=='') return this.$message({message: '输入内容不可为空',type: 'warning'})
-            let res = await blog.updateBlog(this.title,this.markdownValue,this.blogClass,this.$route.query.blogId,this.getToday())
+            if (this.title == '' || this.markdownValue == '' || this.blogClass == '') return this.$message({ message: '输入内容不可为空', type: 'warning' })
+            let res = await blog.updateBlog(this.title, this.markdownValue, this.blogClass, this.$route.query.blogId, this.getToday(),this.bgImg)
             console.log(res)
-            if(res.success){
-                this.$message({message: '保存成功',type: 'success'})
+            if (res.success) {
+                this.$message({ message: '保存成功', type: 'success' })
                 //清空数据
-                this.title=''
+                this.title = ''
                 this.markdownValue = ''
                 this.blogClass = ''
                 localStorage.removeItem('blogSave_edit')
-                setTimeout(()=>{
+                setTimeout(() => {
                     window.close();
-                },1000)
+                }, 1000)
                 //clearInterval(this.interval)
             }
         },
         //查找博客分类方法
-        async findBlogClass(){
+        async findBlogClass() {
             let res = await blog.findBlogClass()
-            if(res.success){
-               this.blogClassList = res.data
+            if (res.success) {
+                this.blogClassList = res.data
             }
         },
         // 绑定@imgAdd event
-        $imgAdd(pos, $file){
+        $imgAdd(pos, $file) {
             //上传图片接口
-            blog.upImg($file.miniurl).then(res=>{
-                if(res.success){
-                    this.$message({message: '图片上传成功',type: 'success'})
+            blog.upImg($file.miniurl).then(res => {
+                if (res.success) {
+                    this.$message({ message: '图片上传成功', type: 'success' })
                     this.$refs.md.$img2Url(pos, res.data);
-                }else{
-                    this.$message.error({message: '上传图片失败'})
+                } else {
+                    this.$message.error({ message: '上传图片失败' })
                 }
-                
+
             })
         },
-        getToday(){
+        getToday() {
             var data = new Date(),
                 year = data.getFullYear(),
-                month = ((data.getMonth() + 1)) < 10?'0'+(data.getMonth() + 1):(data.getMonth() + 1),
-                day = data.getDate()<10?'0'+data.getDate():data.getDate(),
-                hours = data.getHours()<10?'0'+data.getHours():data.getHours(),
-                minutes = data.getMinutes()<10?'0'+data.getMinutes():data.getMinutes(),
-                seconds = data.getSeconds()<10?'0'+data.getSeconds():data.getSeconds()
-            return year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds
+                month = ((data.getMonth() + 1)) < 10 ? '0' + (data.getMonth() + 1) : (data.getMonth() + 1),
+                day = data.getDate() < 10 ? '0' + data.getDate() : data.getDate(),
+                hours = data.getHours() < 10 ? '0' + data.getHours() : data.getHours(),
+                minutes = data.getMinutes() < 10 ? '0' + data.getMinutes() : data.getMinutes(),
+                seconds = data.getSeconds() < 10 ? '0' + data.getSeconds() : data.getSeconds()
+            return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
         },
-        autoSave(){
-            this.interval = setInterval(()=>{
+        autoSave() {
+            this.interval = setInterval(() => {
                 //this.$message({message: '自动保存!',type: 'success'})
                 let blogSave = {}
                 blogSave.title = this.title //自动保存标题
                 blogSave.blogClass = this.blogClass//自动保存分类
                 blogSave.body = this.markdownValue
                 localStorage.setItem('blogSave_edit', JSON.stringify(blogSave))//把用户信息存到localStorage
-            },10000)
+            }, 10000)
         },
     },
     computed: {
@@ -145,14 +150,14 @@ export default {
 
 <style lang="less" scoped>
 @import "../../assets/css/auth.css";
-#main{
+#main {
     height: 100vh;
 }
-.v-note-op{
-    border: 1px solid #e6e6e6!important;
-    box-shadow:none!important;
+.v-note-op {
+    border: 1px solid #e6e6e6 !important;
+    box-shadow: none !important;
 }
-.btn{
+.btn {
     position: fixed;
     top: 87%;
     right: 3%;
@@ -166,14 +171,14 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: all .3s;
-    &:hover{
+    transition: all 0.3s;
+    &:hover {
         background: #ff6262;
         box-shadow: 0 0 6px 1px #ff8888;
-        transition: all .3s;
+        transition: all 0.3s;
     }
 }
-.markdown-body img{
+.markdown-body img {
     max-height: 40rem;
 }
 </style>

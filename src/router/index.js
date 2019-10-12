@@ -27,41 +27,62 @@ const router = new Router({
         {
             path: '/',
             component: () => import('@/pages/index/index.vue'), //index页面
+            meta: {
+                title: 'DLHTX的博客园~'
+            },
             children:[
                 {   
                     path:'',
                     // meta: { requiresAuth: true },
                     name:'blogList',
+                    meta: {
+                        title: '梦开始的地方~'
+                    },
                     component: () => import('@/pages/blogList/blogList.vue') //blog子路由
                 },
                 {
                     path:'/blogDetail',
-                    meta: { requiresAuth: true },
                     name:'blogDetail',
+                    meta: {
+                        title: '博客详情-♪(＾∀＾●)ﾉ~',
+                        requiresAuth: true 
+                    },
                     component: () => import('@/pages/blogDetail/blogDetail.vue') //blog子路由
                 },
                 {
                     path:'/myBlog',
-                    meta: { requiresAuth: true },
                     name:'myBlog',
+                    meta: {
+                        title: '我的博客-♪(＾∀＾●)ﾉ~',
+                        requiresAuth: true 
+                    },
                     component: () => import('@/pages/myBlog/myBlog.vue') //我的所有博客
                 },
                 {
                     path:'/myFabBlog',
-                    meta: { requiresAuth: true },
                     name:'myFabBlog',
+                    meta: {
+                        title: '我喜欢的博客-♪(＾∀＾●)ﾉ~',
+                        requiresAuth: true 
+                    },
                     component: () => import('@/pages/myFabBlog/myFabBlog.vue') //我的所有博客
                 },
                 {
                     path:'/my',
-                    meta: { requiresAuth: true },
                     name:'my',
+                    meta: {
+                        title: '♪(＾∀＾●)ﾉ~',
+                        requiresAuth: true 
+                    },
                     component: () => import('@/pages/my/my.vue') //个人中心
                 },
                 {
                     path:'/blogCard',
-                    meta: { requiresAuth: true },
                     name:'blogCard',
+                    meta: {
+                        title: '博客列表-♪(＾∀＾●)ﾉ~',
+                        requiresAuth: true 
+                    },
                     component: () => import('@/pages/blogCard/blogCard.vue') //卡片式的列表
                 },
             ]
@@ -69,18 +90,29 @@ const router = new Router({
         {
             path: '/login',
             name: 'login',
+            meta: {
+                title: '登录'
+            },
             component: () => import('@/pages/login/login.vue')  //登录页面
+        },
+        {
+            path: '/register',
+            name: 'register',
+            meta: {
+                title: '注册'
+            },
+            component: () => import('@/pages/login/registe.vue')  //登录页面
         },
         {
             path: '/writeBlog',
             name: 'writeBlog',
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, title: '书写吧~少年' },
             component: () => import('@/pages/writeBlog/writeBlog.vue')  //写博客页面
         },
         {
             path: '/editBlog',
             name: 'editBlog',
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, title: '书写吧~少年'},
             component: () => import('@/pages/editBlog/editBlog.vue')  //写博客页面
         },
     ]
@@ -98,7 +130,15 @@ router.beforeEach((to, from, next) => {
                 next()
             }
         })
-    } else {
+    }
+    else {
+        next() // 确保一定要调用 next()
+    }
+
+    if(to.matched.some(record => record.meta.title)){
+        console.log(to.meta.title)
+        document.title = to.meta.title
+    }else {
         next() // 确保一定要调用 next()
     }
 })

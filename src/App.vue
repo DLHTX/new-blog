@@ -1,9 +1,8 @@
 <template>
-  <div id="app">
-    <el-progress :text-inside="true" :stroke-width="2" :percentage="progress.time" status="exception" v-if="progress.show" style="position: absolute!important;height: 8px!important;z-index: 99999!important;width: 100%!important;top: -8px;"></el-progress>
-        <router-view  class="child-view" ref="routerView"></router-view>
-  </div>
-  
+    <div id="app">
+        <!-- <lottieLoading v-if='showAni'></lottieLoading> -->
+        <router-view class="child-view" ref="routerView"></router-view>
+    </div>
 </template>
 
 <script>
@@ -12,84 +11,57 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 
 export default {
-  name: 'App',
-  components:{
-    Header,
-    Footer
-  },
-  data(){
-	return{
-        showStyle:false,
-        isRun:false,
-        slogan:null,
-        enterAnimate:"animated fadeInUp",
-        leaveAnimate:"animated fadeOutDown",
-        isScroll:false
-	} 
-  },
-  created(){
-  },
-  methods:{
-    showUpBtn(){
+    name: 'App',
+    components: {
+        Header,
+        Footer
+    },
+    data() {
+        return {
+            showStyle: false,
+            isRun: false,
+            slogan: null,
+            enterAnimate: "animated fadeInUp",
+            leaveAnimate: "animated fadeOutDown",
+            isScroll: false,
+            showAni:false,
+        }
+    },
+    mounted() {
+        // setInterval(()=>{
+        //     console.log(this.showAni)
+        // },20)
+    },
+    methods: {
+        showUpBtn() {
 
-    }
-    // ...mapActions([
-    //     'getGrxx',
-    //     'getPermissions',
-    // ]),
-    // checkLogin(){
-    //     if(localStorage.getItem('token')){
-    //         if(!this.user){
-    //             this.getGrxx()//获取user信息
-    //         }
-    //     }
-    // },
-    // handleScroll(){
-    //     // 页面滚动距顶部距离
-    //     var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-    //     var scroll = scrollTop - this.i;
-    //     this.i = scrollTop;
-    //     if(scroll<0){
-    //         if(!this.isScroll) return
-    //         this.isScroll=false
-    //         this.$refs.routerView.showUpBtn(false)
-    //     }else{
-    //         if(this.isScroll) return
-    //         this.isScroll=true
-    //         this.$refs.routerView.showUpBtn(true)
-    //     }
-    // }
-  },
-  computed:{
-    ...mapGetters([
-        'isLogin',
-        'user',
-        'progress'
-    ]),
-    
-    
-  },
-  watch:{
-    showStyle:()=>{
-        // return console.log('aaaa')
-    }
-  }
+        }
+
+    },
+    computed: {
+        ...mapGetters([
+            'isLogin',
+            'user',
+            'progress'
+        ]),
+    },
+   
 }
 </script>
 
 <style lang="less">
 @import "./assets/common.less";
 @import "assets/css/animate.css";
-#app{
+#app {
     height: 100%;
     position: relative;
-    overflow: hidden;
+    // overflow: hidden;
 }
 .el-progress {
-    position: absolute!important;
-    height: 8px!important;
-    z-index: 99999!important;
-    width: 100%!important;
+    position: absolute !important;
+    height: 8px !important;
+    z-index: 99999 !important;
+    width: 100% !important;
     top: -8px;
 }
 </style>

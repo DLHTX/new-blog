@@ -24,7 +24,8 @@ const URL = {
   changeHeadImg:'changeHeadImg',
   updatedUserInfo:'updatedUserInfo',
   findAllBlogByclassName:'findAllBlogByclassName',
-  findFabByUsername:'findFabByUsername'
+  findFabByUsername:'findFabByUsername',
+  reviewCommit:'reviewCommit'
   //必应随机图片接口https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
 }
 
@@ -35,8 +36,8 @@ export default {
     findAllBlogByclassName({className,page,row}){
         return request(URL.findAllBlogByclassName,'get',{className,page,row})
     },
-    saveBlog(name,title,body,className){
-        return request(URL.saveBlog,'post',formatData({name,title,body,className}),false)
+    saveBlog(name,title,body,className,bgImg){
+        return request(URL.saveBlog,'post',formatData({name,title,body,className,bgImg}),false)
     },
     findBlogByBlogId(blogId){
         return request(URL.findBlogByBlogId,'get',{blogId})
@@ -45,10 +46,13 @@ export default {
         return request(URL.upImg,'post',formatData({imgData}))
     },
     findBlogCommitByBlogId(blogId){
-        return request(URL.findBlogCommitByBlogId,'get',{blogId})
+        return request(URL.findBlogCommitByBlogId,'get',{blogId},false)
     },
-    addCommit(commitName,blogId,commitBody,avatar){
-        return request(URL.addCommit,'post',formatData({commitName,blogId,commitBody,avatar}),false)
+    addCommit(commitName,blogId,commitBody,avatar,date){
+        return request(URL.addCommit,'post',formatData({commitName,blogId,commitBody,avatar,date}),false)
+    },
+    reviewCommit(commitId,commitBody,toUser,fromUser,date,fromUserImg){
+        return request(URL.reviewCommit,'post',formatData({commitId,commitBody,toUser,fromUser,date,fromUserImg}),false)
     },
     findBlogClass(){
         return request(URL.findBlogClass,'get')
@@ -56,8 +60,8 @@ export default {
     findBlogByUsername(userName){
         return request(URL.findBlogByUsername,'get',userName)
     },
-    updateBlog(title,body,className,blogId,update_time){
-        return request(URL.updateBlog,'post',formatData({title,body,className,blogId,update_time}))
+    updateBlog(title,body,className,blogId,update_time,bgImg){
+        return request(URL.updateBlog,'post',formatData({title,body,className,blogId,update_time,bgImg}))
     },
     addFabulous(userName,blogId){
         return request(URL.addFabulous,'post',formatData({userName,blogId}),false)

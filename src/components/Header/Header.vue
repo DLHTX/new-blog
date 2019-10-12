@@ -37,12 +37,12 @@
           <i class="iconfont icon-shuxiegongju"></i>写博客
         </router-link>
       </el-dropdown>
-    </div>
+    </div>      
     <div class="navbar-menu">
-        <router-link :to="{path:'/myBlog' , query: { userName: 'dlhtx'}}">Archives</router-link>
-        <router-link :to="{name:'blogDetail',query:{blogId:666}}">Links</router-link>
-        <router-link :to="{name:'blogDetail',query:{blogId:888}}">About</router-link>
-        <router-link :to="{name:'blogDetail',query:{blogId:12319}}">Logs</router-link>
+        <router-link :to="{path:'/myBlog' , query: {userName: 'dlhtx'}}">文章</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:666}}">友链</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:888}}">关于</router-link>
+        <router-link :to="{name:'blogDetail',query:{blogId:12319}}">更新日志</router-link>
     </div>
   </div>
 </template>

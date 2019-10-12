@@ -26,9 +26,22 @@ export default {
     mounted() {
         ///this.handleScroll()
         console.log('upbtn mounted...')
+         window.addEventListener('scroll', this.handleScroll, true);  
     },
     methods: {
         ...mapActions(["getGrxx", "checkLogin", "logout", "getPermissions"]),
+        handleScroll(){
+            // 页面滚动距顶部距离
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 
+                      document.body.scrollTop
+            var scroll = scrollTop - this.i;
+            this.i = scrollTop;
+            if(scroll<0){
+                this.isShow = false
+            }else{
+                this.isShow = true
+            }
+        },
         scrollToTop() {
             this.scrollAnimation(document.documentElement.scrollTop || document.body.scrollTop, 0)
         },
